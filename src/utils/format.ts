@@ -1,0 +1,5 @@
+export const norm = (s: string) => String(s || '').trim().replace(/\s+/g, ' ').toUpperCase()
+export const pct = (a: number, b: number) => (b > 0 ? Math.round((a / b) * 100) : null)
+export const fmtP = (v: number | null) => (v == null ? '—' : v + '%')
+export const avg = (a: number[]) => (a.length ? Math.round(a.reduce((x, y) => x + y, 0) / a.length) : 0)
+export const uid = () => crypto.randomUUID()
