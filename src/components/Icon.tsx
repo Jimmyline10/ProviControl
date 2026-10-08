@@ -47,6 +47,12 @@ const P: Record<string, string> = {
   arrowRight: 'M5 12h14M12 5l7 7-7 7',
   arrowLeft: 'M19 12H5M12 19l-7-7 7-7',
   shield: 'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z',
+  shieldCheck: 'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10zM9 12l2 2 4-4',
+  clipboardCheck: 'M9 2h6a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1zM16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2M9 14l2 2 4-4',
+  handshake: 'M11 17l2 2a1 1 0 1 0 3-3M14 14l2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4M21 3l1 11h-2M3 3L2 14l6.5 6.5a1 1 0 1 0 3-3M3 4h8',
+  barChart: 'M3 21h18M6 17v-4M10 17V9M14 17v-6M18 17V5',
+  headset: 'M3 14v-2a9 9 0 0 1 18 0v2M21 14v3a2 2 0 0 1-2 2h-1v-6h1a2 2 0 0 1 2 2zM3 14v3a2 2 0 0 0 2 2h1v-6H5a2 2 0 0 0-2 2zM18 19a3 3 0 0 1-3 3h-3',
+  logIn: 'M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3',
 }
 
 export function Icon({ name, size = 18, className }: { name: keyof typeof P | string; size?: number; className?: string }) {
