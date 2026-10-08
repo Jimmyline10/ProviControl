@@ -53,6 +53,8 @@ const P: Record<string, string> = {
   barChart: 'M3 21h18M6 17v-4M10 17V9M14 17v-6M18 17V5',
   headset: 'M3 14v-2a9 9 0 0 1 18 0v2M21 14v3a2 2 0 0 1-2 2h-1v-6h1a2 2 0 0 1 2 2zM3 14v3a2 2 0 0 0 2 2h1v-6H5a2 2 0 0 0-2 2zM18 19a3 3 0 0 1-3 3h-3',
   logIn: 'M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3',
+  filter: 'M22 3H2l8 9.46V19l4 2v-8.54L22 3z',
+  x: 'M18 6L6 18M6 6l12 12',
 }
 
 export function Icon({ name, size = 18, className }: { name: keyof typeof P | string; size?: number; className?: string }) {
