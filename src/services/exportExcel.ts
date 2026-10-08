@@ -3,6 +3,7 @@ import { bitColumns, bitRows } from '../logic/bitacora'
 import { calc, inWeekF, providerStats, apps } from '../logic/indicators'
 import { weeksSeries } from '../logic/summary'
 import { allEvents, HistEvent, stLabel } from '../logic/history'
+import { buildReport, plain } from '../logic/interpretation'
 import type { AppData, Config } from '../types'
 import { addDays, dow, fmtLong, hh, todayISO, weekEnd } from '../utils/date'
 import { fmtP, pct } from '../utils/format'
@@ -79,6 +80,8 @@ export function exportExec(data: AppData, cfg: Config, week: string) {
   const st = (v: number | null, g: number, o: number, inv?: boolean) => v == null ? '—'
     : inv ? (v <= g ? 'ÓPTIMO' : v <= o ? 'ACEPTABLE' : 'CRÍTICO') : (v >= g ? 'ÓPTIMO' : v >= o ? 'ACEPTABLE' : 'CRÍTICO')
   const ser = weeksSeries(data, week, 8)
+  const rep = buildReport(data, cfg, week)
+  const TL = { g: 'CUMPLE', o: 'OBSERVACIÓN', r: 'CRÍTICO', n: 'SIN DATOS' }
   return writeXlsx([
     { name: 'Reporte ejecutivo', cols: [34, 14, 12, 14, 48], aoa: [
       ['PROVICONTROL · REPORTE EJECUTIVO'], [`Semana del ${fmtLong(week)} al ${fmtLong(weekEnd(week))}`], [`Generado el ${fmtLong(todayISO())}`], [],
@@ -96,6 +99,20 @@ export function exportExec(data: AppData, cfg: Config, week: string) {
     { name: 'Tendencia 8 semanas', cols: [12, 12, 12, 12, 10, 10, 16], aoa: [
       ['Desde', 'Hasta', 'Programadas', 'A tiempo', 'Sin cita', 'Cumpl. general', 'Estado'],
       ...ser.map(s => [s.w, weekEnd(s.w), s.r.programadas, s.r.ontime, s.r.sc, fmtP(s.r.cumpGen), st(s.r.cumpGen, cfg.metaCump, 60)])] },
+    { name: 'Interpretación', cols: [28, 12, 14, 10, 14, 14, 16, 70], aoa: [
+      ['INTERPRETACIÓN ESTADÍSTICA · ' + rep.period.toUpperCase()], [],
+      ['CONCLUSIÓN GENERAL', rep.verdict.label.toUpperCase()], [plain(rep.verdict.text)], [],
+      ['1. INDICADORES CLAVE'],
+      ['Indicador', 'Resultado', 'IC 95%', 'Meta', 'Estado', 'Var. sem. ant.', 'Histórico', 'Lectura'],
+      ...rep.kpis.map(k => [k.name, k.value, k.ci, k.meta, TL[k.tone], k.delta, k.hist, k.reading]), [],
+      ['2. ANÁLISIS'],
+      ...rep.sections.flatMap(sec => [[sec.title.toUpperCase()], ...sec.paras.map(t => [plain(t)]), []]),
+      ['3. CONCLUSIONES Y RECOMENDACIONES'], ...rep.recs.map((t, i) => [`${i + 1}. ${plain(t)}`]), [],
+      ['NOTA METODOLÓGICA'], ...rep.method.map(t => [t])] },
+    { name: 'Interpretación por día', cols: [12, 11, 8, 9, 11, 13, 12, 12, 90], aoa: [
+      ['Día', 'Fecha', 'Citas', 'Sin cita', 'Recibidos', 'Cumplimiento', 'Puntualidad', 'Inasistencia', 'Interpretación'],
+      ...rep.days.map(d => [d.label, d.date, d.prog, d.sc, d.recib, fmtP(d.cump), fmtP(d.punt), fmtP(d.inas), plain(d.text)]),
+      [], [plain(rep.dayNote)]] },
   ], `Reporte_Ejecutivo_${week}`)
 }
 

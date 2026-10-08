@@ -5,12 +5,13 @@ import { Icon } from '../components/Icon'
 import { DeltaTag, Kpi } from '../components/Kpi'
 import { calc, capacityDay, delta, inWeekF, providerStats, tone } from '../logic/indicators'
 import { makeDemo } from '../logic/demo'
+import { buildReport } from '../logic/interpretation'
 import { weeksSeries } from '../logic/summary'
 import { exportExec, notifyExport } from '../services/exportExcel'
 import { addDays, fmtLong, fmtShort, weekEnd } from '../utils/date'
 import { fmtP, pct } from '../utils/format'
 import { Alerts } from './resumen/Alerts'
-import { SummaryText } from './resumen/SummaryText'
+import { Interpretation } from './resumen/Interpretation'
 
 export function ResumenView() {
   const { data, cfg, week, addData } = useApp()
@@ -19,6 +20,7 @@ export function ResumenView() {
   const empty = !data.appointments.length && !data.walkins.length
   const cap = capacityDay(cfg) * 6
   const ocup = pct(r.programadas, cap), ocupP = pct(p.programadas, cap)
+  const rep = buildReport(data, cfg, week)
   const stats = providerStats(data, inWeekF(week))
   const top = stats.filter(e => e.total > 0).sort((a, b) => b.total - a.total || a.name.localeCompare(b.name)).slice(0, 5)
   const grand = stats.reduce((n, e) => n + e.total, 0) || 1
@@ -95,7 +97,11 @@ export function ResumenView() {
             <div className="info"><div className="lbl">{l}</div><div className="val">{v}</div><div className="msg">{m}</div></div></div>))}
         </div>
 
-        <div className="exec-summary"><div className="panel-h"><Icon name="fileText" size={16} /><h3>Resumen ejecutivo</h3></div><div className="body"><SummaryText r={r} /></div></div>
+        <h2 className="section-title">Resumen ejecutivo e interpretación estadística</h2>
+        <div className="exec-summary">
+          <div className="panel-h"><Icon name="fileText" size={16} /><h3>Informe de la semana</h3><span className="panel-sub">{rep.period}</span></div>
+          <Interpretation rep={rep} />
+        </div>
       </section>
     </>
   )
