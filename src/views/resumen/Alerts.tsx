@@ -4,6 +4,7 @@ import { apps, calc, capacityDay, inWeekF, providerStats } from '../../logic/ind
 import type { Indicators } from '../../logic/indicators'
 import { addDays, fmtShort, todayISO } from '../../utils/date'
 import type { ReactNode } from 'react'
+import { Icon } from '../../components/Icon'
 
 interface Item { pre?: boolean; cls: string; body: ReactNode; go?: string; label?: string }
 
@@ -33,7 +34,7 @@ export function Alerts({ r }: { r: Indicators }) {
     <div className="alert-list">
       {out.map((a, i) => (
         <div key={i} className={'alert ' + a.cls}>
-          <span>{a.cls === 'ok' ? '✅' : a.cls === 'bad' ? '🚨' : '⚠️'}</span><span>{a.body}</span>
+          <Icon name={a.cls === 'ok' ? 'checkCircle' : a.cls === 'bad' ? 'alert' : 'info'} size={16} className="alert-ico" /><span>{a.body}</span>
           {a.go && <button className="btn sm ghost go" onClick={() => { if (a.pre) setHist({ from: '', to: addDays(today, -1), st: 'pending', type: 'Con cita', q: '', page: 1 }); location.hash = '#' + a.go }}>{a.label}</button>}
         </div>
       ))}
