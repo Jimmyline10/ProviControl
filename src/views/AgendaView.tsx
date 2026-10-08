@@ -4,6 +4,7 @@ import { useApp } from '../context/AppContext'
 import { useUI } from '../context/UIContext'
 import { apps, capacityDay, inWeekF } from '../logic/indicators'
 import { exportAgenda, notifyExport } from '../services/exportExcel'
+import { exportAgendaPdf } from '../services/exportPdf'
 import { addDays, fmtShort, hh, mondayOf, todayISO, weekEnd } from '../utils/date'
 import { fmtP, pct } from '../utils/format'
 import { Icon } from '../components/Icon'
@@ -46,6 +47,11 @@ export function AgendaView() {
     }
   }
   const onExport = () => notifyExport(exportAgenda(data, week), toast)
+  const onPdf = () => {
+    const label = [fProv && 'Proveedor: ' + fProv, fEst && 'Estado: ' + ST[fEst], fTurno !== 'all' && 'Turno: ' + TURNOS[fTurno][0]].filter(Boolean).join(' · ')
+    exportAgendaPdf(data, cfg, week, { hours, match: a => matches(a.provider, a.status), filterLabel: label })
+      .then(() => toast('PDF exportado.'), () => toast('No se pudo generar el PDF. Revise su conexión e intente de nuevo.'))
+  }
   const resetFilters = () => { setFProv(''); setFEst(''); setFTurno('all') }
 
   return (
@@ -70,6 +76,7 @@ export function AgendaView() {
           <button className="btn ghost sm" onClick={() => openDialog({ kind: 'walk-form' })}><Icon name="truck" size={14} />Sin cita</button>
           <span className="ag-occ">{cfg.slots} espacios por hora · Ocupación semanal <b>{fmtP(pct(apps(data, inW).length, cap * 6))}</b></span>
           <button className="btn ghost sm" onClick={onExport}><Icon name="download" size={14} />Exportar Excel</button>
+          <button className="btn ghost sm" onClick={onPdf}><Icon name="fileText" size={14} />Exportar PDF</button>
           <button className="btn danger-ghost sm" onClick={onClear}><Icon name="trash" size={14} />Limpiar semana</button>
         </div>
 
