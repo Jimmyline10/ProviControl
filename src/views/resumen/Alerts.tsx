@@ -12,8 +12,8 @@ export function Alerts({ r }: { r: Indicators }) {
   const { data, cfg, week, setHist } = useApp()
   const out: Item[] = [], today = todayISO(), cap = capacityDay(cfg)
   const past = data.appointments.filter(a => a.status === 'pending' && a.date < today).length
-  if (past) out.push({ pre: true, cls: 'bad', go: 'historial', label: 'Revisar',
-    body: <><b>{past}</b> cita(s) de días anteriores siguen como «Programada». Registre si llegaron o no para que las estadísticas sean reales.</> })
+  if (past) out.push({ pre: true, cls: 'bad', go: 'historial', label: 'Ver pendientes',
+    body: <><b>{past}</b> cita(s) de días anteriores siguen como «Programada». Registre en la Agenda si llegaron o no para que las estadísticas sean reales.</> })
   const pv = providerStats(data, inWeekF(week)).filter(e => e.late + e.absent >= 2).sort((a, b) => (b.late + b.absent) - (a.late + a.absent))
   if (pv.length) out.push({ cls: '', go: 'proveedores', label: 'Ver proveedores',
     body: <>Proveedores con 2 o más tardanzas/inasistencias esta semana: <b>{pv.slice(0, 4).map(e => e.name).join(', ')}</b>{pv.length > 4 ? ' y ' + (pv.length - 4) + ' más' : ''}.</> })

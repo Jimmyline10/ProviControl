@@ -240,6 +240,8 @@ table.t tbody tr:hover td{background:var(--row-hover)}
 table.t tr.click{cursor:pointer}
 table.t .prov{font-weight:500;color:var(--text)}
 table.t td b{font-weight:600}
+table.t td.notes-cell{max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text-2)}
+.readonly-tag{display:inline-flex;align-items:center;gap:4px;margin-right:8px;padding:2px 8px;border-radius:999px;background:#f1f5f9;color:var(--text-2);font-size:var(--fs-xs);font-weight:500}
 .pill{display:inline-block;font-size:var(--fs-xs);font-weight:600;padding:2px 8px;border-radius:999px;white-space:nowrap;line-height:1.5}
 .pill.g{background:var(--green-light);color:#2d5a1b}
 .pill.o{background:#fdf0e4;color:#8a3f08}
