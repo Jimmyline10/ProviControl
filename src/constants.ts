@@ -14,8 +14,13 @@ export const ST: Record<Status, string> = {
 export const ST_COLOR: Record<Status, string> = {
   ontime: '#548235', late: '#ED7D31', absent: '#C00000', pending: '#94a3b8',
 }
-export const VIEWS: [string, string][] = [
-  ['resumen', '📊 Resumen'], ['agenda', '📅 Agenda'], ['bitacora', '📋 Bitácora'],
-  ['proveedores', '🏭 Proveedores'], ['analisis', '📈 Análisis'], ['historial', '🗂 Historial'],
-  ['ajustes', '⚙️ Datos y ajustes'],
+/** [clave, etiqueta, ícono, grupo del menú lateral] */
+export const VIEWS: [string, string, string, string][] = [
+  ['resumen', 'Panel ejecutivo', 'dashboard', 'Operación'],
+  ['agenda', 'Agenda', 'calendar', 'Operación'],
+  ['bitacora', 'Bitácora', 'clipboard', 'Operación'],
+  ['proveedores', 'Proveedores', 'truck', 'Gestión'],
+  ['analisis', 'Análisis', 'chart', 'Gestión'],
+  ['historial', 'Historial', 'archive', 'Gestión'],
+  ['ajustes', 'Datos y ajustes', 'settings', 'Sistema'],
 ]
