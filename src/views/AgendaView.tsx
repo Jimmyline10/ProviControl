@@ -2,7 +2,7 @@ import { DAYS, DAYS_FULL, HOURS, ST } from '../constants'
 import { useApp } from '../context/AppContext'
 import { useUI } from '../context/UIContext'
 import { apps, capacityDay, inWeekF } from '../logic/indicators'
-import { exportAgenda } from '../services/exportExcel'
+import { exportAgenda, notifyExport } from '../services/exportExcel'
 import { addDays, fmtShort, hh, todayISO, weekEnd } from '../utils/date'
 import { fmtP, pct } from '../utils/format'
 import { Icon } from '../components/Icon'
@@ -18,7 +18,7 @@ export function AgendaView() {
       clearRange(week, weekEnd(week)); toast('Semana limpiada.')
     }
   }
-  const onExport = () => { exportAgenda(data, week); toast('Excel exportado.') }
+  const onExport = () => notifyExport(exportAgenda(data, week), toast)
 
   return (
     <>

@@ -6,7 +6,7 @@ import { DeltaTag, Kpi } from '../components/Kpi'
 import { calc, capacityDay, delta, inWeekF, providerStats, tone } from '../logic/indicators'
 import { makeDemo } from '../logic/demo'
 import { weeksSeries } from '../logic/summary'
-import { exportExec } from '../services/exportExcel'
+import { exportExec, notifyExport } from '../services/exportExcel'
 import { addDays, fmtLong, fmtShort, weekEnd } from '../utils/date'
 import { fmtP, pct } from '../utils/format'
 import { Alerts } from './resumen/Alerts'
@@ -41,7 +41,7 @@ export function ResumenView() {
         <p>Semana del {fmtLong(week)} al {fmtLong(weekEnd(week))}. Los porcentajes comparan contra la semana anterior.</p></div>
         <div className="view-actions no-print">
           <button className="btn ghost" onClick={() => window.print()}><Icon name="printer" size={15} />Imprimir</button>
-          <button className="btn primary" onClick={() => { exportExec(data, cfg, week); toast('Excel exportado.') }}><Icon name="download" size={15} />Exportar a Excel</button>
+          <button className="btn primary" onClick={() => notifyExport(exportExec(data, cfg, week), toast)}><Icon name="download" size={15} />Exportar a Excel</button>
         </div></div>
       {empty && <div className="banner"><span><b>Aún no hay datos.</b> Programe su primera cita en <a href="#agenda">Agenda</a>, o cargue datos de ejemplo para explorar todas las ventanas.</span>
         <button className="btn navy sm" onClick={loadDemo}>Cargar datos de ejemplo</button></div>}

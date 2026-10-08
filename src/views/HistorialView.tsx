@@ -2,7 +2,7 @@ import { DAYS_SHORT } from '../constants'
 import { useApp } from '../context/AppContext'
 import { useUI } from '../context/UIContext'
 import { EMPTY_HIST, histEvents, pillOf, stLabel } from '../logic/history'
-import { exportHistorial } from '../services/exportExcel'
+import { exportHistorial, notifyExport } from '../services/exportExcel'
 import { dow, fmtShort } from '../utils/date'
 import { Icon } from '../components/Icon'
 
@@ -26,7 +26,7 @@ export function HistorialView() {
   return (
     <>
       <div className="view-head"><div><h1>Historial de registros</h1><p>Todas las citas y llegadas sin cita guardadas. Edite, corrija o elimine cualquier registro.</p></div>
-        <div className="no-print"><button className="btn green" onClick={() => { exportHistorial(ev); toast('Excel exportado.') }}><Icon name="download" size={15} />Exportar filtro a Excel</button></div></div>
+        <div className="no-print"><button className="btn green" onClick={() => notifyExport(exportHistorial(ev), toast)}><Icon name="download" size={15} />Exportar filtro a Excel</button></div></div>
       <div className="toolbar">
         <label>Desde <input type="date" value={hist.from} onChange={e => set({ from: e.target.value })} /></label>
         <label>Hasta <input type="date" value={hist.to} onChange={e => set({ to: e.target.value })} /></label>

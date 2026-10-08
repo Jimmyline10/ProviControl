@@ -4,7 +4,7 @@ import { useApp } from '../context/AppContext'
 import { useUI } from '../context/UIContext'
 import { makeDemo } from '../logic/demo'
 import { downloadBackup, parseBackup } from '../services/backup'
-import { exportAll } from '../services/exportExcel'
+import { exportAll, notifyExport } from '../services/exportExcel'
 import { pad } from '../utils/date'
 import { Icon } from '../components/Icon'
 
@@ -79,7 +79,7 @@ export function AjustesView() {
             <button className="btn navy" onClick={() => { downloadBackup(data, cfg); toast('Respaldo descargado. Guárdelo en un lugar seguro.') }}><Icon name="download" size={15} />Descargar respaldo (.json)</button>
             <button className="btn ghost" onClick={() => file.current?.click()}><Icon name="upload" size={15} />Restaurar respaldo…</button>
             <input ref={file} type="file" accept=".json,application/json" style={{ display: 'none' }} onChange={onFile} />
-            <button className="btn green" onClick={() => { exportAll(data); toast('Excel exportado.') }}><Icon name="download" size={15} />Exportar todo a Excel</button>
+            <button className="btn green" onClick={() => notifyExport(exportAll(data), toast)}><Icon name="download" size={15} />Exportar todo a Excel</button>
           </div></div></div>
 
         <div className="card"><div className="card-h"><h3><Icon name="target" size={16} />Metas e indicadores</h3><span className="hint">Definen los colores y semáforos de toda la aplicación</span></div>
