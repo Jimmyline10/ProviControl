@@ -6,6 +6,7 @@ import { makeDemo } from '../logic/demo'
 import { downloadBackup, parseBackup } from '../services/backup'
 import { exportAll } from '../services/exportExcel'
 import { pad } from '../utils/date'
+import { Icon } from '../components/Icon'
 
 function CfgForm() {
   const { cfg, data, saveConfig } = useApp()
@@ -66,7 +67,7 @@ export function AjustesView() {
     <>
       <div className="view-head"><div><h1>Datos y ajustes</h1><p>Respaldo, metas de los indicadores y herramientas de datos.</p></div></div>
       <div className="stack-v">
-        <div className="card"><div className="card-h"><h3>💾 Guardado y respaldo</h3></div><div className="card-b">
+        <div className="card"><div className="card-h"><h3><Icon name="database" size={16} />Guardado y respaldo</h3></div><div className="card-b">
           <div className="statgrid" style={{ marginBottom: 14 }}>
             {stat('Registros', n)}{stat('Citas', data.appointments.length)}{stat('Sin cita', data.walkins.length)}
             {stat('Último guardado', ls ? pad(ls.getHours()) + ':' + pad(ls.getMinutes()) : '—', { fontSize: 15 })}
@@ -75,27 +76,27 @@ export function AjustesView() {
           {status.error && <div className="banner warn">{status.error}</div>}
           <p className="note">Cada cambio se guarda en la <b>base de datos (Supabase)</b>, por lo que ya no depende de este navegador ni de este equipo. Aun así puede descargar un <b>respaldo</b> .json y restaurarlo cuando quiera.</p>
           <div className="toolbar" style={{ margin: '12px 0 0' }}>
-            <button className="btn navy" onClick={() => { downloadBackup(data, cfg); toast('Respaldo descargado. Guárdelo en un lugar seguro.') }}>⬇️ Descargar respaldo (.json)</button>
-            <button className="btn ghost" onClick={() => file.current?.click()}>⬆️ Restaurar respaldo…</button>
+            <button className="btn navy" onClick={() => { downloadBackup(data, cfg); toast('Respaldo descargado. Guárdelo en un lugar seguro.') }}><Icon name="download" size={15} />Descargar respaldo (.json)</button>
+            <button className="btn ghost" onClick={() => file.current?.click()}><Icon name="upload" size={15} />Restaurar respaldo…</button>
             <input ref={file} type="file" accept=".json,application/json" style={{ display: 'none' }} onChange={onFile} />
-            <button className="btn green" onClick={() => { exportAll(data); toast('Excel exportado.') }}>📥 Exportar todo a Excel</button>
+            <button className="btn green" onClick={() => { exportAll(data); toast('Excel exportado.') }}><Icon name="download" size={15} />Exportar todo a Excel</button>
           </div></div></div>
 
-        <div className="card"><div className="card-h"><h3>🎯 Metas e indicadores</h3><span className="hint">Definen los colores y semáforos de toda la aplicación</span></div>
+        <div className="card"><div className="card-h"><h3><Icon name="target" size={16} />Metas e indicadores</h3><span className="hint">Definen los colores y semáforos de toda la aplicación</span></div>
           <div className="card-b"><CfgForm key={JSON.stringify(cfg)} /></div></div>
 
-        <div className="card"><div className="card-h"><h3>📐 Cómo se calculan los indicadores</h3></div><div className="card-b"><p className="note">
+        <div className="card"><div className="card-h"><h3><Icon name="sigma" size={16} />Cómo se calculan los indicadores</h3></div><div className="card-b"><p className="note">
           <b>Cumplimiento general</b> = <code>a tiempo ÷ (programadas + sin cita)</code>. Los imprevistos lo reducen.<br />
           <b>Cumplimiento de cita</b> = <code>llegaron con cita ÷ (con cita + sin cita)</code>. Es el % de la hoja de control en Excel.<br />
           <b>Puntualidad</b> = <code>a tiempo ÷ llegaron con cita</code>.<br />
           <b>Improvisación</b> = <code>sin cita ÷ (programadas + sin cita)</code>. <b>Inasistencia</b> = <code>no llegaron ÷ programadas</code>.<br />
           <b>Retraso</b> = minutos desde el inicio de la hora agendada hasta la llegada real. <b>Ocupación</b> = <code>citas ÷ (espacios por hora × 7 horas × 6 días)</code>.</p></div></div>
 
-        <div className="card"><div className="card-h"><h3>🧪 Datos de prueba y limpieza</h3></div><div className="card-b">
+        <div className="card"><div className="card-h"><h3><Icon name="beaker" size={16} />Datos de prueba y limpieza</h3></div><div className="card-b">
           <div className="toolbar" style={{ margin: 0 }}>
             <button className="btn ghost" onClick={loadDemo}>Cargar datos de ejemplo (6 semanas)</button>
             <button className="btn ghost" disabled={!demo} onClick={() => { removeDemo(); toast('Datos de ejemplo quitados.') }}>Quitar datos de ejemplo ({demo})</button>
-            <button className="btn danger" onClick={wipe}>🗑 Borrar todos los datos</button>
+            <button className="btn danger" onClick={wipe}><Icon name="trash" size={15} />Borrar todos los datos</button>
           </div>
           <p className="note" style={{ marginTop: 10 }}>Los datos de ejemplo se marcan aparte: puede quitarlos sin perder sus registros reales.</p></div></div>
       </div>

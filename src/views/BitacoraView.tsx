@@ -7,6 +7,7 @@ import { calc, inWeekF, TCOL, tone } from '../logic/indicators'
 import { exportBitacora } from '../services/exportExcel'
 import { addDays, fmtShort, hh } from '../utils/date'
 import { fmtP, pct } from '../utils/format'
+import { Icon } from '../components/Icon'
 
 export function BitacoraView() {
   const { data, cfg, week } = useApp()
@@ -20,7 +21,7 @@ export function BitacoraView() {
       <div className="view-head"><div><h1>Bitácora de recepción</h1>
         <p>Registro de lo que realmente llegó, igual que el Excel: con cita a la izquierda, sin cita a la derecha. Solo se muestra el nombre del proveedor.</p></div>
         <div className="no-print">
-          <button className="btn green" onClick={() => { exportBitacora(data, week); toast('Excel exportado.') }}>📥 Exportar a Excel</button>{' '}
+          <button className="btn green" onClick={() => { exportBitacora(data, week); toast('Excel exportado.') }}><Icon name="download" size={15} />Exportar a Excel</button>{' '}
           <button className="btn ghost" onClick={() => openDialog({ kind: 'walk-form' })}>+ Sin cita</button>
         </div>
       </div>

@@ -7,6 +7,7 @@ import { calc, capacityDay, inWeekF, scopeLabel } from '../logic/indicators'
 import { weeksSeries } from '../logic/summary'
 import { addDays, fmtShort, hh } from '../utils/date'
 import { pct } from '../utils/format'
+import { Icon } from '../components/Icon'
 
 const Bars = ({ rows, meta }: { rows: { l: string; n: number; on: number }[]; meta: number }) => (
   <div className="hbars">{rows.map(x => {
@@ -53,7 +54,7 @@ export function AnalisisView() {
       </div>
       {empty && <div className="banner warn"><span>No hay datos en este periodo. Cambie el periodo o cargue datos en <a href="#ajustes">Datos y ajustes</a>.</span></div>}
       <div className="stack-v">
-        <div className="card"><div className="card-h"><h3>🔥 Mapa de carga: día × hora</h3><span className="hint">Citas + sin cita. Más oscuro = más movimiento</span></div>
+        <div className="card"><div className="card-h"><h3><Icon name="flame" size={16} />Mapa de carga: día × hora</h3><span className="hint">Citas + sin cita. Más oscuro = más movimiento</span></div>
           <div className="card-b"><div className="tblwrap"><table className="heat" style={{ minWidth: 560 }}>
             <thead><tr><th className="h" />{DAYS_SHORT.map(d => <th key={d}>{d}</th>)}</tr></thead>
             <tbody>{HOURS.map((hr, hi) => (
@@ -65,15 +66,15 @@ export function AnalisisView() {
           </table></div></div></div>
 
         <div className="grid2">
-          <div className="card"><div className="card-h"><h3>🕐 Puntualidad por franja horaria</h3><span className="hint">% a tiempo de las llegadas con cita</span></div><div className="card-b"><Bars rows={a.byHour} meta={cfg.metaPunt} /></div></div>
-          <div className="card"><div className="card-h"><h3>📆 Puntualidad por día</h3><span className="hint">% a tiempo de las llegadas con cita</span></div><div className="card-b"><Bars rows={a.byDay} meta={cfg.metaPunt} /></div></div>
+          <div className="card"><div className="card-h"><h3><Icon name="clock" size={16} />Puntualidad por franja horaria</h3><span className="hint">% a tiempo de las llegadas con cita</span></div><div className="card-b"><Bars rows={a.byHour} meta={cfg.metaPunt} /></div></div>
+          <div className="card"><div className="card-h"><h3><Icon name="calendar" size={16} />Puntualidad por día</h3><span className="hint">% a tiempo de las llegadas con cita</span></div><div className="card-b"><Bars rows={a.byDay} meta={cfg.metaPunt} /></div></div>
         </div>
 
         <div className="grid3">
-          <div className="card"><div className="card-h"><h3>⏱️ Distribución de retrasos</h3><span className="hint">{a.r.delays.length} tardanzas</span></div>
+          <div className="card"><div className="card-h"><h3><Icon name="bars" size={16} />Distribución de retrasos</h3><span className="hint">{a.r.delays.length} tardanzas</span></div>
             <div className="card-b"><div className="cols-chart">{a.B.map(b => <div key={b.l} className="c"><span className="t">{b.n || ''}</span><div className="b" style={{ height: `${(b.n / a.mxB) * 80}%`, background: '#ED7D31' }} /></div>)}</div>
               <div className="cols-lab">{a.B.map(b => <span key={b.l}>{b.l}</span>)}</div></div></div>
-          <div className="card"><div className="card-h"><h3>🧩 Con cita vs sin cita por día</h3></div>
+          <div className="card"><div className="card-h"><h3><Icon name="layers" size={16} />Con cita vs sin cita por día</h3></div>
             <div className="card-b"><div className="cols-chart">{a.mix.map(m => (
               <div key={m.l} className="c"><span className="t">{m.c + m.s || ''}</span>
                 <div className="b" style={{ height: `${((m.c + m.s) / a.mxM) * 80}%` }}>
@@ -81,14 +82,14 @@ export function AnalisisView() {
                   {m.c ? <i style={{ height: `${(m.c / (m.c + m.s)) * 100}%`, background: '#548235' }} /> : null}</div></div>))}</div>
               <div className="cols-lab">{a.mix.map(m => <span key={m.l}>{m.l}</span>)}</div>
               <div className="legend-inline"><span><i style={{ background: '#548235' }} />Con cita</span><span><i style={{ background: '#C00000' }} />Sin cita</span></div></div></div>
-          <div className="card"><div className="card-h"><h3>🧱 Ocupación de la agenda</h3><span className="hint">Promedio por día (capacidad {cap})</span></div>
+          <div className="card"><div className="card-h"><h3><Icon name="grid" size={16} />Ocupación de la agenda</h3><span className="hint">Promedio por día (capacidad {cap})</span></div>
             <div className="card-b"><div className="hbars">{a.occ.map(o => (
               <div key={o.l} className="row"><span className="l">{o.l}</span>
                 <div className="track"><i style={{ width: `${Math.min(100, o.p)}%`, background: o.p >= 90 ? '#C00000' : o.p >= 70 ? '#ED7D31' : '#2E75B6' }} /></div>
                 <span className="n">{o.p}%</span></div>))}</div></div></div>
         </div>
 
-        <div className="card"><div className="card-h"><h3>📈 Tendencia de las últimas 8 semanas</h3><span className="hint">Pase el cursor sobre un punto para ver el valor</span></div>
+        <div className="card"><div className="card-h"><h3><Icon name="trend" size={16} />Tendencia de las últimas 8 semanas</h3><span className="hint">Pase el cursor sobre un punto para ver el valor</span></div>
           <div className="card-b"><div className="grid2" style={{ gridTemplateColumns: 'repeat(4,minmax(0,1fr))' }}>
             {sparks.map(([t, vals, col, fmt]) => (
               <div key={t} className="spark-card"><div className="l"><span>{t}</span></div>
@@ -96,7 +97,7 @@ export function AnalisisView() {
                 <div className="x"><span>{labels[0]}</span><span>{labels[labels.length - 1]}</span></div></div>))}
           </div></div></div>
 
-        <div className="card"><div className="card-h"><h3>↔️ Esta semana vs semana anterior</h3></div>
+        <div className="card"><div className="card-h"><h3><Icon name="compare" size={16} />Esta semana vs semana anterior</h3></div>
           <div className="tblwrap"><table className="t">
             <thead><tr><th>Indicador</th><th className="r">Esta semana</th><th className="r">Semana anterior</th><th className="r">Variación</th></tr></thead>
             <tbody>{cmp.map(([name, c, p, lower, unit]) => {

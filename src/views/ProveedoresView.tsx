@@ -5,6 +5,7 @@ import { useUI } from '../context/UIContext'
 import { level, providerStats, ProviderStat, scopeFilter, scopeLabel } from '../logic/indicators'
 import { fmtShort } from '../utils/date'
 import { fmtP, norm } from '../utils/format'
+import { Icon } from '../components/Icon'
 
 type SortKey = 'name' | 'total' | 'prog' | 'ontime' | 'late' | 'absent' | 'sc' | 'punt' | 'delayProm' | 'cump' | 'last'
 const val = (k: SortKey, e: ProviderStat): string | number =>
@@ -38,7 +39,7 @@ export function ProveedoresView() {
         <div className="insight-card"><div className="l">Regulares</div><div className="v" style={{ color: 'var(--orange)' }}>{count('o')}</div><div className="s">entre 60% y {cfg.metaCump - 1}%</div></div>
         <div className="insight-card"><div className="l">Críticos</div><div className="v" style={{ color: 'var(--red)' }}>{count('r')}</div><div className="s">menos de 60%</div></div>
       </div>
-      <div className="toolbar"><input className="grow" placeholder="🔍 Buscar proveedor…" value={q} onChange={e => setQ(e.target.value)} /></div>
+      <div className="toolbar"><label className="search grow"><Icon name="search" size={15} /><input placeholder="Buscar proveedor…" value={q} onChange={e => setQ(e.target.value)} /></label></div>
       <div className="card"><div className="tblwrap"><table className="t">
         <thead><tr><th className="c">#</th>
           {COLS.map(([k, l, c]) => <th key={k} className={'sortable ' + c} onClick={() => toggle(k)}>{l}{sort.k === k ? (sort.d > 0 ? ' ▲' : ' ▼') : ''}</th>)}

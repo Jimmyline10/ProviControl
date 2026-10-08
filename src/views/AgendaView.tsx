@@ -5,6 +5,7 @@ import { apps, capacityDay, inWeekF } from '../logic/indicators'
 import { exportAgenda } from '../services/exportExcel'
 import { addDays, fmtShort, hh, todayISO, weekEnd } from '../utils/date'
 import { fmtP, pct } from '../utils/format'
+import { Icon } from '../components/Icon'
 
 export function AgendaView() {
   const { data, cfg, week, clearRange } = useApp()
@@ -69,7 +70,7 @@ export function AgendaView() {
           <button className="action-btn red" onClick={() => openDialog({ kind: 'walk-form' })}>REGISTRAR SIN CITA</button>
           <button className="action-btn orange" onClick={() => openDialog({ kind: 'appt-form' })}>+ NUEVA CITA</button>
           <button className="action-btn slate" onClick={onClear}>LIMPIAR SEMANA</button>
-          <button className="export-btn" onClick={onExport}>📥 EXPORTAR AGENDA A EXCEL</button>
+          <button className="export-btn" onClick={onExport}><Icon name="download" size={15} />Exportar agenda a Excel</button>
           <div className="legend-box"><b>Leyenda:</b>
             <div><span className="legend-swatch" style={{ background: '#548235' }} />Verde = A tiempo</div>
             <div><span className="legend-swatch" style={{ background: '#ED7D31' }} />Naranja = Tarde</div>
