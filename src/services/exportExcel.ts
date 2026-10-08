@@ -63,7 +63,8 @@ export function exportAgenda(data: AppData, week: string) {
     return data.appointments.filter(a => a.date === d && a.hour === h).sort((a, b) => a.slot - b.slot)
       .map(a => `[#${a.slot}] ${a.provider} (${ST[a.status]})`).join(' | ')
   })]))
-  const flat = [...apps(data, inWeekF(week))]
+  aoa.push(['Total agendadas', ...DAYS.map((_, di) => data.appointments.filter(a => a.date === addDays(week, di)).length)])
+  const flat =[...apps(data, inWeekF(week))]
     .sort((a, b) => a.date.localeCompare(b.date) || a.hour - b.hour || a.slot - b.slot)
     .map(a => [a.date, DAYS_SHORT[dow(a.date)], hh(a.hour), '#' + a.slot, a.provider, ST[a.status], a.arrival, a.delay || 0, a.notes])
   return writeXlsx([

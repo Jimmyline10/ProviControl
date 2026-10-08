@@ -12,6 +12,14 @@ export function AgendaView() {
   const { openDialog, confirm, toast } = useUI()
   const today = todayISO()
   const inW = inWeekF(week)
+  const cap = capacityDay(cfg)
+  /* contador por día: citas agendadas y su desglose por estado */
+  const perDay = DAYS.map((_, i) => {
+    const date = addDays(week, i), A = data.appointments.filter(a => a.date === date)
+    const by = (st: string) => A.filter(a => a.status === st).length
+    return { date, n: A.length, ontime: by('ontime'), late: by('late'), absent: by('absent'), pending: by('pending') }
+  })
+  const weekTotal = perDay.reduce((n, d) => n + d.n, 0)
 
   const onClear = async () => {
     if (await confirm(`¿Borrar TODOS los registros de la semana ${fmtShort(week)} al ${fmtShort(weekEnd(week))}?`, 'Borrar semana')) {
@@ -28,7 +36,9 @@ export function AgendaView() {
         <div className="agenda-panel">
           <table className="agenda">
             <thead><tr><th>HORA</th>
-              {DAYS.map((d, i) => <th key={d}>{d}<br /><span>{fmtShort(addDays(week, i))}</span></th>)}
+              {DAYS.map((d, i) => (
+                <th key={d}>{d}<br /><span>{fmtShort(addDays(week, i))}</span>
+                  <b className={'day-count' + (perDay[i].n ? '' : ' zero')} title={`${perDay[i].n} cita(s) agendada(s)`}>{perDay[i].n}</b></th>))}
             </tr></thead>
             <tbody>
               {HOURS.map(hr => (
@@ -63,6 +73,27 @@ export function AgendaView() {
                 </tr>
               ))}
             </tbody>
+            <tfoot>
+              <tr className="day-total">
+                <td className="hour"><b>{weekTotal}</b><span>citas en la semana</span></td>
+                {perDay.map(d => {
+                  const p = pct(d.n, cap) ?? 0
+                  return (
+                    <td key={d.date}>
+                      <div className="dt-head"><b>{d.n}</b> agendada{d.n !== 1 ? 's' : ''}<span>{p}%</span></div>
+                      <div className="dt-bar" title={`Ocupación ${p}% (${d.n} de ${cap} espacios)`}><i style={{ width: `${Math.min(100, p)}%` }} className={p >= 90 ? 'hi' : ''} /></div>
+                      <div className="dt-break">
+                        {d.n ? <>
+                          {d.ontime > 0 && <span className="ontime">{d.ontime} a tiempo</span>}
+                          {d.late > 0 && <span className="late">{d.late} tarde</span>}
+                          {d.absent > 0 && <span className="absent">{d.absent} no llegó</span>}
+                          {d.pending > 0 && <span className="pending">{d.pending} pendiente{d.pending !== 1 ? 's' : ''}</span>}
+                        </> : <span>Sin citas</span>}
+                      </div>
+                    </td>)
+                })}
+              </tr>
+            </tfoot>
           </table>
         </div>
         <div className="side-actions">
@@ -81,7 +112,7 @@ export function AgendaView() {
             <div><span className="legend-swatch" style={{ background: '#C00000' }} />Rojo = No llegó / Sin cita</div>
             <div><span className="legend-swatch" style={{ background: '#EFF4FB' }} />Azul claro = Programada</div>
             <div className="legend-note">Cada hora tiene <strong>{cfg.slots} espacios</strong>.
-              Ocupación de la semana: <strong>{fmtP(pct(apps(data, inW).length, capacityDay(cfg) * 6))}</strong></div>
+              Ocupación de la semana: <strong>{fmtP(pct(apps(data, inW).length, cap * 6))}</strong></div>
           </div>
         </div>
       </div>
