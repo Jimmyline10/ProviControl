@@ -19,7 +19,7 @@ export function HistorialView() {
 
   return (
     <>
-      <div className="view-head"><div><h1>Historial de registros</h1><p>Consulta de todas las citas y llegadas sin cita registradas. Vista de solo lectura.</p></div>
+      <div className="view-head"><span className="vh-ico"><Icon name="archive" size={24} /></span><div><h1>Historial de registros</h1><p>Consulta de todas las citas y llegadas sin cita registradas. Vista de solo lectura.</p></div>
         <div className="no-print"><button className="btn green" onClick={() => notifyExport(exportHistorial(ev), toast)}><Icon name="download" size={15} />Exportar filtro a Excel</button></div></div>
       <div className="toolbar">
         <label>Desde <input type="date" value={hist.from} onChange={e => set({ from: e.target.value })} /></label>

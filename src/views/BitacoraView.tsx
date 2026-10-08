@@ -18,7 +18,7 @@ export function BitacoraView() {
 
   return (
     <>
-      <div className="view-head"><div><h1>Bitácora de recepción</h1>
+      <div className="view-head"><span className="vh-ico"><Icon name="clipboard" size={24} /></span><div><h1>Bitácora de recepción</h1>
         <p>Registro de lo que realmente llegó, igual que el Excel: con cita a la izquierda, sin cita a la derecha. Solo se muestra el nombre del proveedor.</p></div>
         <div className="no-print">
           <button className="btn green" onClick={() => notifyExport(exportBitacora(data, week), toast)}><Icon name="download" size={15} />Exportar a Excel</button>{' '}

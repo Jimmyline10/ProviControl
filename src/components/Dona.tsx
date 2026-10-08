@@ -11,7 +11,7 @@ export function Dona({ r }: { r: Indicators }) {
     <>
       <div className="dona-wrap">
         <svg viewBox="0 0 42 42">
-          <circle cx="21" cy="21" r="15.9155" fill="none" stroke="#eef2f7" strokeWidth="5" />
+          <circle cx="21" cy="21" r="15.9155" fill="none" stroke="rgba(255,255,255,.08)" strokeWidth="5" />
           {parts.map(([n, v, col]) => {
             if (!v || !total) return null
             const len = (v / total) * circ, o = off; off += len

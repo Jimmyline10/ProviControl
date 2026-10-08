@@ -32,7 +32,7 @@ export function ProveedoresView() {
 
   return (
     <>
-      <div className="view-head"><div><h1>Proveedores</h1><p>Comportamiento de cada proveedor en el periodo: {scopeLabel(scope, week)}.</p></div><ScopeSeg /></div>
+      <div className="view-head"><span className="vh-ico"><Icon name="truck" size={24} /></span><div><h1>Proveedores</h1><p>Comportamiento de cada proveedor en el periodo: {scopeLabel(scope, week)}.</p></div><ScopeSeg /></div>
       <div className="insights" style={{ marginBottom: 14 }}>
         <div className="insight-card"><div className="l">Proveedores</div><div className="v">{list.length}</div><div className="s">con movimiento en el periodo</div></div>
         <div className="insight-card"><div className="l">Excelentes</div><div className="v" style={{ color: 'var(--green)' }}>{count('g')}</div><div className="s">cumplimiento ≥ {cfg.metaCump}%</div></div>

@@ -12,7 +12,7 @@ export const ST: Record<Status, string> = {
   ontime: 'A tiempo', late: 'Tarde', absent: 'No llegó', pending: 'Programada',
 }
 export const ST_COLOR: Record<Status, string> = {
-  ontime: '#548235', late: '#ED7D31', absent: '#C00000', pending: '#94a3b8',
+  ontime: '#3fcf6a', late: '#ff9a3d', absent: '#ff5c5c', pending: '#7fa8d8',
 }
 /** [clave, etiqueta, ícono, grupo del menú lateral] */
 export const VIEWS: [string, string, string, string][] = [

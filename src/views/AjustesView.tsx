@@ -65,7 +65,7 @@ export function AjustesView() {
 
   return (
     <>
-      <div className="view-head"><div><h1>Datos y ajustes</h1><p>Respaldo, metas de los indicadores y herramientas de datos.</p></div></div>
+      <div className="view-head"><span className="vh-ico"><Icon name="settings" size={24} /></span><div><h1>Datos y ajustes</h1><p>Respaldo, metas de los indicadores y herramientas de datos.</p></div></div>
       <div className="stack-v">
         <div className="card"><div className="card-h"><h3><Icon name="database" size={16} />Guardado y respaldo</h3></div><div className="card-b">
           <div className="statgrid" style={{ marginBottom: 14 }}>

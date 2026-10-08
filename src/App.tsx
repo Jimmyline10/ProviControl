@@ -17,6 +17,20 @@ import { addDays, fmtShort, mondayOf, pad, todayISO, weekEnd } from './utils/dat
 const fromHash = () => { const h = location.hash.slice(1); return VIEWS.some(v => v[0] === h) ? h : 'resumen' }
 const GROUPS = [...new Set(VIEWS.map(v => v[3]))]
 
+/** Logo del menú: cubo isométrico en verdes */
+const LogoCube = () => (
+  <svg className="sb-mark" viewBox="0 0 64 64" aria-hidden="true">
+    <defs>
+      <linearGradient id="sbc-t" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#9ef5c4" /><stop offset="1" stopColor="#3ddc84" /></linearGradient>
+      <linearGradient id="sbc-l" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#36cf78" /><stop offset="1" stopColor="#17a457" /></linearGradient>
+      <linearGradient id="sbc-r" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#1fb565" /><stop offset="1" stopColor="#0e7a40" /></linearGradient>
+    </defs>
+    <path d="M32 4 58 17.5 32 31 6 17.5Z" fill="url(#sbc-t)" />
+    <path d="M5 21.5 30 34.5V61L5 48Z" fill="url(#sbc-l)" />
+    <path d="M34 34.5 59 21.5V48L34 61Z" fill="url(#sbc-r)" />
+  </svg>
+)
+
 export default function App() {
   const [view, setView] = useState(fromHash)
   const [menuOpen, setMenuOpen] = useState(false)
@@ -36,19 +50,19 @@ export default function App() {
     <div className={'shell' + (menuOpen ? ' menu-open' : '')}>
       <aside className="sidebar">
         <div className="sb-brand">
-          <div className="sb-mark">PC</div>
-          <div><div className="sb-name">ProviControl</div><div className="sb-sub">Recepción de proveedores</div></div>
+          <LogoCube />
+          <div><div className="sb-name">Provi<em>Control</em></div><div className="sb-sub">Recepción de proveedores</div></div>
         </div>
         <nav className="sb-nav">
           {GROUPS.map(g => (
             <div key={g} className="sb-group">
-              <div className="sb-group-l">{g}</div>
               {VIEWS.filter(v => v[3] === g).map(([k, l, ico]) => (
                 <a key={k} href={`#${k}`} className={'sb-link' + (view === k ? ' active' : '')} aria-current={view === k ? 'page' : undefined}>
                   <Icon name={ico} />{l}
                 </a>))}
             </div>))}
         </nav>
+        <div className="sb-tagline"><Icon name="truck" size={26} />Juntos por una cadena de suministro más eficiente</div>
         <div className="sb-user">
           <div className="sb-avatar">{email.slice(0, 1).toUpperCase() || 'U'}</div>
           <div className="sb-user-info"><div className="sb-user-name" title={email}>{email || 'Usuario'}</div><div className="sb-user-role">Sesión activa</div></div>
@@ -60,7 +74,8 @@ export default function App() {
       <div className="main-col">
         <header className="appbar">
           <button className="appbar-menu" onClick={() => setMenuOpen(o => !o)} aria-label="Abrir menú"><Icon name="menu" /></button>
-          <div className="crumbs"><span>ProviControl</span><Icon name="right" size={14} /><b>{current[1]}</b></div>
+          <button className="appbar-back" onClick={() => history.back()} title="Volver" aria-label="Volver"><Icon name="arrowLeft" size={18} /></button>
+          <div className="crumbs"><b>{current[1]}</b></div>
           <div className="appbar-r">
             <div className="weekpick" title="Semana visualizada">
               <button onClick={() => setWeek(addDays(week, -7))} aria-label="Semana anterior"><Icon name="left" size={16} /></button>

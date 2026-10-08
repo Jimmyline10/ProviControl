@@ -39,7 +39,7 @@ export function ResumenView() {
 
   return (
     <>
-      <div className="view-head"><div><h1>Panel ejecutivo</h1>
+      <div className="view-head"><span className="vh-ico"><Icon name="dashboard" size={24} /></span><div><h1>Panel ejecutivo</h1>
         <p>Semana del {fmtLong(week)} al {fmtLong(weekEnd(week))}. Los porcentajes comparan contra la semana anterior.</p></div>
         <div className="view-actions no-print">
           <button className="btn ghost" onClick={() => window.print()}><Icon name="printer" size={15} />Imprimir</button>

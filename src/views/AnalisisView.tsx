@@ -11,7 +11,7 @@ import { Icon } from '../components/Icon'
 
 const Bars = ({ rows, meta }: { rows: { l: string; n: number; on: number }[]; meta: number }) => (
   <div className="hbars">{rows.map(x => {
-    const p = pct(x.on, x.n), c = p == null ? '#cbd5e1' : p >= meta ? '#548235' : p >= 60 ? '#ED7D31' : '#C00000'
+    const p = pct(x.on, x.n), c = p == null ? '#3a5478' : p >= meta ? '#3fcf6a' : p >= 60 ? '#ff9a3d' : '#ff5c5c'
     return <div key={x.l} className="row"><span className="l">{x.l}</span>
       <div className="track"><i style={{ width: `${p || 0}%`, background: c }} /></div>
       <span className="n">{p == null ? '—' : p + '%'} <small>n={x.n}</small></span></div>
@@ -33,16 +33,16 @@ export function AnalisisView() {
     ['Cumplimiento de cita', cur.cumpCita, prev.cumpCita, false, '%'],
     ['Retraso promedio', cur.late ? cur.delayProm : null, prev.late ? prev.delayProm : null, true, ' min']]
   const sparks: [string, (number | null)[], string, (v: number) => string][] = [
-    ['Cumplimiento general', ser.map(s => s.r.cumpGen), '#2E75B6', v => v + '%'],
-    ['Puntualidad', ser.map(s => s.r.punt), '#548235', v => v + '%'],
-    ['Sin cita (cantidad)', ser.map(s => s.r.sc), '#C00000', v => String(v)],
-    ['Retraso promedio', ser.map(s => (s.r.late ? s.r.delayProm : null)), '#ED7D31', v => v + ' min']]
+    ['Cumplimiento general', ser.map(s => s.r.cumpGen), '#4f9bff', v => v + '%'],
+    ['Puntualidad', ser.map(s => s.r.punt), '#3fcf6a', v => v + '%'],
+    ['Sin cita (cantidad)', ser.map(s => s.r.sc), '#ff5c5c', v => String(v)],
+    ['Retraso promedio', ser.map(s => (s.r.late ? s.r.delayProm : null)), '#ff9a3d', v => v + ' min']]
   const { best, worst, freq, maxDel } = a
   const empty = !a.A.length && !a.W.length
 
   return (
     <>
-      <div className="view-head"><div><h1>Análisis estadístico</h1><p>{scopeLabel(scope, week)}. Las tendencias siempre muestran las últimas 8 semanas.</p></div><ScopeSeg /></div>
+      <div className="view-head"><span className="vh-ico"><Icon name="chart" size={24} /></span><div><h1>Análisis estadístico</h1><p>{scopeLabel(scope, week)}. Las tendencias siempre muestran las últimas 8 semanas.</p></div><ScopeSeg /></div>
       <div className="insights" style={{ marginBottom: 14 }}>
         <Insight l="Hora pico" v={a.peakH < 0 ? '—' : hh(a.peakH)} s={`${a.peakN} movimientos`} />
         <Insight l="Día más cargado" v={a.peakD < 0 ? '—' : DAYS_FULL[a.peakD]} s={`${a.peakDN} movimientos`} />
@@ -60,7 +60,7 @@ export function AnalisisView() {
             <tbody>{HOURS.map((hr, hi) => (
               <tr key={hr}><th className="h">{hh(hr)}</th>{DAYS.map((_, d) => {
                 const c = a.mat[d][hi], k = c.n / a.mxN
-                return <td key={d} style={c.n ? { background: `rgba(31,78,121,${(.12 + k * .88).toFixed(2)})`, color: k > .45 ? '#fff' : '#1F4E79' } : undefined}
+                return <td key={d} style={c.n ? { background: `rgba(47,134,240,${(.14 + k * .86).toFixed(2)})`, color: k > .45 ? '#fff' : '#a9d1ff', boxShadow: k > .6 ? '0 0 12px -2px rgba(79,155,255,.7)' : undefined } : undefined}
                   title={`${DAYS_FULL[d]} ${hh(hr)}: ${c.n} movimientos${c.arr ? ', ' + c.late + ' tarde de ' + c.arr + ' llegadas' : ''}`}>{c.n || ''}</td>
               })}</tr>))}</tbody>
           </table></div></div></div>
@@ -72,20 +72,20 @@ export function AnalisisView() {
 
         <div className="grid3">
           <div className="card"><div className="card-h"><h3><Icon name="bars" size={16} />Distribución de retrasos</h3><span className="hint">{a.r.delays.length} tardanzas</span></div>
-            <div className="card-b"><div className="cols-chart">{a.B.map(b => <div key={b.l} className="c"><span className="t">{b.n || ''}</span><div className="b" style={{ height: `${(b.n / a.mxB) * 80}%`, background: '#ED7D31' }} /></div>)}</div>
+            <div className="card-b"><div className="cols-chart">{a.B.map(b => <div key={b.l} className="c"><span className="t">{b.n || ''}</span><div className="b" style={{ height: `${(b.n / a.mxB) * 80}%`, background: '#ff9a3d' }} /></div>)}</div>
               <div className="cols-lab">{a.B.map(b => <span key={b.l}>{b.l}</span>)}</div></div></div>
           <div className="card"><div className="card-h"><h3><Icon name="layers" size={16} />Con cita vs sin cita por día</h3></div>
             <div className="card-b"><div className="cols-chart">{a.mix.map(m => (
               <div key={m.l} className="c"><span className="t">{m.c + m.s || ''}</span>
                 <div className="b" style={{ height: `${((m.c + m.s) / a.mxM) * 80}%` }}>
-                  {m.s ? <i style={{ height: `${(m.s / (m.c + m.s)) * 100}%`, background: '#C00000' }} /> : null}
-                  {m.c ? <i style={{ height: `${(m.c / (m.c + m.s)) * 100}%`, background: '#548235' }} /> : null}</div></div>))}</div>
+                  {m.s ? <i style={{ height: `${(m.s / (m.c + m.s)) * 100}%`, background: '#ff5c5c' }} /> : null}
+                  {m.c ? <i style={{ height: `${(m.c / (m.c + m.s)) * 100}%`, background: '#3fcf6a' }} /> : null}</div></div>))}</div>
               <div className="cols-lab">{a.mix.map(m => <span key={m.l}>{m.l}</span>)}</div>
-              <div className="legend-inline"><span><i style={{ background: '#548235' }} />Con cita</span><span><i style={{ background: '#C00000' }} />Sin cita</span></div></div></div>
+              <div className="legend-inline"><span><i style={{ background: '#3fcf6a' }} />Con cita</span><span><i style={{ background: '#ff5c5c' }} />Sin cita</span></div></div></div>
           <div className="card"><div className="card-h"><h3><Icon name="grid" size={16} />Ocupación de la agenda</h3><span className="hint">Promedio por día (capacidad {cap})</span></div>
             <div className="card-b"><div className="hbars">{a.occ.map(o => (
               <div key={o.l} className="row"><span className="l">{o.l}</span>
-                <div className="track"><i style={{ width: `${Math.min(100, o.p)}%`, background: o.p >= 90 ? '#C00000' : o.p >= 70 ? '#ED7D31' : '#2E75B6' }} /></div>
+                <div className="track"><i style={{ width: `${Math.min(100, o.p)}%`, background: o.p >= 90 ? '#ff5c5c' : o.p >= 70 ? '#ff9a3d' : '#4f9bff' }} /></div>
                 <span className="n">{o.p}%</span></div>))}</div></div></div>
         </div>
 
