@@ -1,0 +1,78 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+.lg { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); min-height: 100vh;
+  font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', sans-serif; background: #f4f7fc; }
+
+/* ---- panel izquierdo ---- */
+.lg-hero { position: relative; color: #fff; padding: 56px 64px; display: flex; flex-direction: column;
+  justify-content: space-between; gap: 32px; overflow: hidden; background: linear-gradient(135deg, #081c3d, #10346b); }
+.lg-hero::before { content: ''; position: absolute; inset: 0; background: url('/login.png') center / cover no-repeat; }
+.lg-hero::after { content: ''; position: absolute; inset: 0;
+  background: linear-gradient(90deg, rgba(6, 24, 56, .94) 0%, rgba(6, 24, 56, .66) 55%, rgba(6, 24, 56, .3) 100%); }
+.lg-hero > * { position: relative; z-index: 1; }
+
+.lg-brand { display: flex; align-items: center; gap: 14px; color: #3b9bff; }
+.lg-brand-name { font-size: 30px; font-weight: 700; line-height: 1; color: #fff; }
+.lg-brand-sub { font-size: 14px; color: #dbe7fb; margin-top: 4px; }
+.lg-brand.dark { color: #1f56c4; margin-bottom: 36px; }
+.lg-brand.dark .lg-brand-name { color: #0d2a5c; font-size: 28px; }
+.lg-brand.dark .lg-brand-sub { color: #4f6286; font-size: 13px; }
+
+.lg-title { font-size: clamp(32px, 3.6vw, 48px); font-weight: 600; line-height: 1.18; margin: 0 0 18px; }
+.lg-title span { color: #3b9bff; }
+.lg-lead { font-size: 16px; line-height: 1.6; color: #d3e0f6; margin: 0 0 36px; }
+
+.lg-feats { display: flex; gap: 0; }
+.lg-feat { display: flex; flex-direction: column; gap: 12px; padding: 0 28px; font-size: 14px; line-height: 1.4; color: #e5edfb; }
+.lg-feat:first-child { padding-left: 0; }
+.lg-feat + .lg-feat { border-left: 1px solid rgba(255, 255, 255, .22); }
+.lg-feat i { width: 58px; height: 58px; border-radius: 50%; display: grid; place-items: center; font-style: normal;
+  background: rgba(31, 86, 196, .55); border: 1px solid rgba(120, 170, 255, .35); color: #fff; }
+
+.lg-quote { margin: 0; padding-left: 16px; border-left: 3px solid #3b9bff; font-size: 15px; line-height: 1.6; color: #dbe7fb; }
+
+/* ---- panel derecho ---- */
+.lg-panel { display: grid; place-items: center; padding: 32px; position: relative;
+  background: radial-gradient(circle at 85% 8%, #e3edfb 0, transparent 38%), linear-gradient(160deg, #f9fbff, #ecf2fb); }
+.lg-card { width: 100%; max-width: 500px; background: #fff; border-radius: 22px; padding: 44px 46px 34px;
+  box-shadow: 0 24px 70px rgba(16, 52, 107, .13); }
+.lg-h2 { font-size: 30px; font-weight: 700; color: #0d2a5c; margin: 0 0 6px; }
+.lg-sub { margin: 0 0 28px; color: #7a889e; font-size: 15px; }
+
+.lg-label { display: block; font-size: 14px; font-weight: 500; color: #34476b; margin: 18px 0 8px; }
+.lg-input { position: relative; display: flex; align-items: center; background: #f4f7fc; border: 1.5px solid #e1e8f3;
+  border-radius: 12px; color: #6f7f9a; padding: 0 14px; gap: 10px; transition: border-color .15s, box-shadow .15s, background .15s; }
+.lg-input:focus-within { border-color: #1f56c4; background: #fff; box-shadow: 0 0 0 4px rgba(31, 86, 196, .12); color: #1f56c4; }
+.lg-input input { flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; padding: 15px 0;
+  font: inherit; font-size: 15px; color: #0d2a5c; }
+.lg-input input::placeholder { color: #a3afc2; }
+.lg-eye { border: 0; background: none; color: #6f7f9a; cursor: pointer; display: grid; place-items: center; padding: 4px; border-radius: 8px; }
+.lg-eye:hover { color: #1f56c4; background: #e9f0fb; }
+
+.lg-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 18px 0 22px; flex-wrap: wrap; }
+.lg-check { display: flex; align-items: center; gap: 10px; font-size: 14px; color: #34476b; cursor: pointer; }
+.lg-check input { width: 18px; height: 18px; accent-color: #1f56c4; cursor: pointer; }
+.lg-link { border: 0; background: none; padding: 0; font: inherit; font-size: 13.5px; color: #1f56c4; cursor: pointer; }
+.lg-link:hover { text-decoration: underline; }
+.lg-link.center { display: block; margin: 18px auto 0; }
+
+.lg-msg { margin: 16px 0 0; padding: 11px 14px; border-radius: 10px; font-size: 13.5px; line-height: 1.45; }
+.lg-msg.err { background: #fdecec; color: #a32121; border: 1px solid #f5c2c2; }
+.lg-msg.ok { background: #e8f6ee; color: #1d6b3d; border: 1px solid #b9e2c9; }
+
+.lg-btn { width: 100%; margin-top: 22px; display: flex; align-items: center; justify-content: center; gap: 10px;
+  border: 0; border-radius: 12px; padding: 16px; font: inherit; font-size: 16px; font-weight: 600; color: #fff; cursor: pointer;
+  background: linear-gradient(90deg, #0b3a99, #1f56c4); box-shadow: 0 10px 24px rgba(31, 86, 196, .32); transition: transform .12s, box-shadow .12s, opacity .12s; }
+.lg-btn:hover { transform: translateY(-1px); box-shadow: 0 14px 28px rgba(31, 86, 196, .4); }
+.lg-btn:disabled { opacity: .7; cursor: default; transform: none; }
+
+.lg-foot { display: flex; align-items: center; gap: 12px; margin-top: 30px; font-size: 12px; color: #8a97ab; text-align: center; }
+.lg-foot::before, .lg-foot::after { content: ''; flex: 1; height: 1px; background: #e4eaf4; }
+
+/* ---- responsive ---- */
+@media (max-width: 960px) {
+  .lg { grid-template-columns: 1fr; }
+  .lg-hero { display: none; }
+  .lg-panel { padding: 20px; min-height: 100vh; }
+  .lg-card { padding: 34px 26px 28px; }
+}
