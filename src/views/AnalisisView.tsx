@@ -14,7 +14,7 @@ const Bars = ({ rows, meta }: { rows: { l: string; n: number; on: number }[]; me
     const p = pct(x.on, x.n), c = p == null ? '#cbd5e1' : p >= meta ? '#548235' : p >= 60 ? '#ED7D31' : '#C00000'
     return <div key={x.l} className="row"><span className="l">{x.l}</span>
       <div className="track"><i style={{ width: `${p || 0}%`, background: c }} /></div>
-      <span className="n">{p == null ? '—' : p + '%'} <small style={{ color: '#8794a5', fontWeight: 600 }}>n={x.n}</small></span></div>
+      <span className="n">{p == null ? '—' : p + '%'} <small>n={x.n}</small></span></div>
   })}</div>
 )
 const Insight = ({ l, v, s, color }: { l: string; v: string; s: string; color?: string }) =>

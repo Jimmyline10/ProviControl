@@ -28,7 +28,7 @@ export function AgendaView() {
         <div className="agenda-panel">
           <table className="agenda">
             <thead><tr><th>HORA</th>
-              {DAYS.map((d, i) => <th key={d}>{d}<br /><span style={{ fontWeight: 600, opacity: .85 }}>{fmtShort(addDays(week, i))}</span></th>)}
+              {DAYS.map((d, i) => <th key={d}>{d}<br /><span>{fmtShort(addDays(week, i))}</span></th>)}
             </tr></thead>
             <tbody>
               {HOURS.map(hr => (
@@ -80,7 +80,7 @@ export function AgendaView() {
             <div><span className="legend-swatch" style={{ background: '#ED7D31' }} />Naranja = Tarde</div>
             <div><span className="legend-swatch" style={{ background: '#C00000' }} />Rojo = No llegó / Sin cita</div>
             <div><span className="legend-swatch" style={{ background: '#EFF4FB' }} />Azul claro = Programada</div>
-            <div style={{ marginTop: 6, fontSize: 11, color: '#6b7a8d' }}>Cada hora tiene <strong>{cfg.slots} espacios</strong>.
+            <div className="legend-note">Cada hora tiene <strong>{cfg.slots} espacios</strong>.
               Ocupación de la semana: <strong>{fmtP(pct(apps(data, inW).length, capacityDay(cfg) * 6))}</strong></div>
           </div>
         </div>

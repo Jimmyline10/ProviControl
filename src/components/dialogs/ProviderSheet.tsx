@@ -25,12 +25,12 @@ export function ProviderSheet({ pkey }: { pkey: string }) {
         {stat('No llegó', e.absent, 'var(--red)')}{stat('Sin cita', e.sc)}{stat('Puntualidad', fmtP(e.punt))}
         {stat('Cumplimiento', fmtP(e.cump))}{stat('Retraso prom.', e.late ? e.delayProm + 'm' : '—')}
       </div>
-      <h4 style={{ margin: '16px 0 6px', color: 'var(--navy)', fontSize: 13 }}>Visitas por día de la semana</h4>
+      <h4 className="sub-h">Visitas por día de la semana</h4>
       <div className="cols-chart" style={{ height: 90 }}>
         {byDay.map((n, i) => <div key={i} className="c"><span className="t">{n || ''}</span><div className="b" style={{ height: `${(n / mx) * 70}%`, background: 'var(--sub)' }} /></div>)}
       </div>
       <div className="cols-lab">{DAYS_SHORT.map(d => <span key={d}>{d}</span>)}</div>
-      <h4 style={{ margin: '16px 0 6px', color: 'var(--navy)', fontSize: 13 }}>Últimos movimientos</h4>
+      <h4 className="sub-h">Últimos movimientos</h4>
       <div className="tblwrap"><table className="t">
         <thead><tr><th>Fecha</th><th>Hora</th><th>Tipo</th><th>Estado</th><th>Llegada</th><th className="r">Retraso</th></tr></thead>
         <tbody>{evs.slice(0, 15).map(v => (

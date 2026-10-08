@@ -24,7 +24,7 @@ export function Dona({ r }: { r: Indicators }) {
       <div className="dona-legend">
         {parts.map(([n, v, col]) => (
           <div key={n} className="item"><span className="dot" style={{ background: col }} /><span>{n}</span>
-            <span className="n">{v} <small style={{ color: '#8794a5' }}>({total ? Math.round((v / total) * 100) : 0}%)</small></span></div>
+            <span className="n">{v} <small>({total ? Math.round((v / total) * 100) : 0}%)</small></span></div>
         ))}
       </div>
     </>

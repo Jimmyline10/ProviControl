@@ -159,6 +159,8 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:none}
 .action-sep{height:1px;background:var(--line-soft);margin:4px 0}
 .legend-box{font-size:var(--fs-sm);color:var(--text-2);line-height:1.9}
 .legend-box b{display:block;margin-bottom:4px;font-size:var(--fs-md);font-weight:600;color:var(--text)}
+.legend-note{margin-top:8px;padding-top:8px;border-top:1px solid var(--line-soft);font-size:var(--fs-xs);color:var(--text-3);line-height:1.6}
+.legend-note strong{color:var(--text-2);font-weight:600}
 .legend-swatch{display:inline-block;width:11px;height:11px;border:1px solid rgba(0,0,0,.15);vertical-align:middle;margin-right:8px;border-radius:3px}
 
 /* Lista de opciones en diálogos (registrar llegada, etc.) */
@@ -373,6 +375,7 @@ table.bitacora tr.pc td.lo{background:#f9d9d6;color:#9b1c12}
 .dona-legend{display:grid;grid-template-columns:1fr 1fr;gap:8px 14px;margin-top:16px}
 .dona-legend .item{display:flex;align-items:center;gap:8px;font-size:var(--fs-sm);color:var(--text-2)}
 .dona-legend .dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+.dona-legend .n small{color:var(--text-3);font-weight:400}
 .dona-legend .n{font-weight:600;color:var(--text);margin-left:auto;font-variant-numeric:tabular-nums}
 
 /* Barras comparativas */
@@ -453,6 +456,8 @@ table.bitacora tr.pc td.lo{background:#f9d9d6;color:#9b1c12}
 .hbars .track{height:14px;background:#f1f5f9;border-radius:4px;overflow:hidden;display:flex}
 .hbars .track i{display:block;height:100%}
 .hbars .row .n{text-align:right;font-weight:600;color:var(--text);font-variant-numeric:tabular-nums}
+.hbars .row .n small{color:var(--text-3);font-weight:500}
+.sub-h{margin:18px 0 8px;font-size:var(--fs-sm);font-weight:600;color:var(--text-2);text-transform:uppercase;letter-spacing:.04em}
 .spark{width:100%;height:92px;display:block}
 .spark-card{border:1px solid var(--line-soft);border-radius:8px;padding:12px 14px;background:#fff}
 .spark-card .l{font-size:var(--fs-sm);font-weight:500;color:var(--text-2);display:flex;justify-content:space-between}

@@ -28,7 +28,7 @@ export function BitacoraView() {
       <div className="card" style={{ overflow: 'hidden' }}><div className="tblwrap">
         <table className="bitacora" style={{ minWidth: 900 }}>
           <thead>
-            <tr>{DAYS.map((d, i) => <th key={d} colSpan={2}>{d}<br /><span style={{ fontWeight: 600, fontSize: 10, opacity: .9 }}>{fmtShort(addDays(week, i))}</span></th>)}</tr>
+            <tr>{DAYS.map((d, i) => <th key={d} colSpan={2}>{d}<br /><span>{fmtShort(addDays(week, i))}</span></th>)}</tr>
             <tr>{DAYS.map(d => <><th key={d + 'c'} className="cc">CON CITA</th><th key={d + 's'} className="sc">SIN CITA</th></>)}</tr>
           </thead>
           <tbody>
@@ -58,19 +58,19 @@ export function BitacoraView() {
           </tbody>
         </table>
       </div></div>
-      <div className="grid3" style={{ marginTop: 14 }}>
-        <div className="card card-b"><div className="insight-card" style={{ border: 0, padding: 0 }}>
+      <div className="insights" style={{ marginTop: 14 }}>
+        <div className="insight-card">
           <div className="l">% Cumplimiento de cita (con cita ÷ recibidos)</div>
           <div className="v" style={{ color: TCOL[tone(r.cumpCita, cfg.metaCump, 60)] }}>{fmtP(r.cumpCita)}</div>
-          <div className="s">{r.atendCC} con cita · {r.sc} sin cita · meta {cfg.metaCump}%</div></div></div>
-        <div className="card card-b"><div className="insight-card" style={{ border: 0, padding: 0 }}>
+          <div className="s">{r.atendCC} con cita · {r.sc} sin cita · meta {cfg.metaCump}%</div></div>
+        <div className="insight-card">
           <div className="l">Puntualidad (a tiempo ÷ con cita)</div>
           <div className="v" style={{ color: TCOL[tone(r.punt, cfg.metaPunt, 60)] }}>{fmtP(r.punt)}</div>
-          <div className="s">{r.ontime} a tiempo · {r.late} tarde{r.late ? ' · retraso prom. ' + r.delayProm + ' min' : ''}</div></div></div>
-        <div className="card card-b"><div className="insight-card" style={{ border: 0, padding: 0 }}>
+          <div className="s">{r.ontime} a tiempo · {r.late} tarde{r.late ? ' · retraso prom. ' + r.delayProm + ' min' : ''}</div></div>
+        <div className="insight-card">
           <div className="l">Pendientes e inasistencias de la semana</div>
           <div className="v">{r.pending} pend. · {r.absent} no llegó</div>
-          <div className="s">No aparecen en la bitácora hasta que lleguen.</div></div></div>
+          <div className="s">No aparecen en la bitácora hasta que lleguen.</div></div>
       </div>
       <p className="note" style={{ marginTop: 10 }}>El % por día se calcula como <code>con cita ÷ (con cita + sin cita)</code>, igual que la hoja de control de Excel. Verde ≥ meta, amarillo ≥ 60%, rojo menor.</p>
     </>
