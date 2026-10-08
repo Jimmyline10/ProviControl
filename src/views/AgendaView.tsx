@@ -66,12 +66,16 @@ export function AgendaView() {
           </table>
         </div>
         <div className="side-actions">
-          <button className="action-btn green" onClick={() => openDialog({ kind: 'pick' })}>LLEGO A TIEMPO / TARDE</button>
-          <button className="action-btn red" onClick={() => openDialog({ kind: 'walk-form' })}>REGISTRAR SIN CITA</button>
-          <button className="action-btn orange" onClick={() => openDialog({ kind: 'appt-form' })}>+ NUEVA CITA</button>
-          <button className="action-btn slate" onClick={onClear}>LIMPIAR SEMANA</button>
-          <button className="export-btn" onClick={onExport}><Icon name="download" size={15} />Exportar agenda a Excel</button>
-          <div className="legend-box"><b>Leyenda:</b>
+          <div className="card"><div className="card-h"><h3>Acciones</h3></div>
+            <div className="card-b action-stack">
+              <button className="btn primary block" onClick={() => openDialog({ kind: 'appt-form' })}><Icon name="calendar" size={15} />Nueva cita</button>
+              <button className="btn green block" onClick={() => openDialog({ kind: 'pick' })}><Icon name="checkCircle" size={15} />Registrar llegada</button>
+              <button className="btn ghost block" onClick={() => openDialog({ kind: 'walk-form' })}><Icon name="truck" size={15} />Registrar sin cita</button>
+              <div className="action-sep" />
+              <button className="btn ghost block" onClick={onExport}><Icon name="download" size={15} />Exportar agenda a Excel</button>
+              <button className="btn danger-ghost block" onClick={onClear}><Icon name="trash" size={15} />Limpiar semana</button>
+            </div></div>
+          <div className="card card-b legend-box"><b>Leyenda</b>
             <div><span className="legend-swatch" style={{ background: '#548235' }} />Verde = A tiempo</div>
             <div><span className="legend-swatch" style={{ background: '#ED7D31' }} />Naranja = Tarde</div>
             <div><span className="legend-swatch" style={{ background: '#C00000' }} />Rojo = No llegó / Sin cita</div>
