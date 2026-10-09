@@ -12,6 +12,7 @@ import { AnalisisView } from './views/AnalisisView'
 import { HistorialView } from './views/HistorialView'
 import { ProveedoresView } from './views/ProveedoresView'
 import { ResumenView } from './views/ResumenView'
+import { RotulosView } from './views/RotulosView'
 import { addDays, fmtShort, mondayOf, pad, todayISO, weekEnd } from './utils/date'
 
 const fromHash = () => { const h = location.hash.slice(1); return VIEWS.some(v => v[0] === h) ? h : 'resumen' }
@@ -95,6 +96,7 @@ export default function App() {
           {view === 'resumen' ? <ResumenView />
             : view === 'agenda' ? <AgendaView />
             : view === 'bitacora' ? <BitacoraView />
+            : view === 'rotulos' ? <RotulosView />
             : view === 'proveedores' ? <ProveedoresView />
             : view === 'analisis' ? <AnalisisView />
             : view === 'historial' ? <HistorialView />

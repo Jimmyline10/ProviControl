@@ -618,6 +618,37 @@ table.bitacora tr.pc td.lo{background:rgba(255,92,92,.22);color:#ffaaaa}
 .empty{padding:34px 20px;text-align:center;color:var(--text-3);font-size:var(--fs-base)}
 .empty .btn{margin-top:10px}
 
+/* Rótulos: base de productos y hoja imprimible */
+.mono{font-family:var(--font-mono);font-weight:500;letter-spacing:.02em;color:#a9d1ff}
+.row-actions{display:inline-flex;gap:6px;align-items:center}
+.toolbar select{min-width:180px}
+.rotulo-modal{width:min(100%,1040px)}
+.rt-body{display:grid;grid-template-columns:minmax(0,1fr) 540px;gap:20px;align-items:start}
+.rt-form{display:flex;flex-direction:column;gap:14px;min-width:0}
+.rt-code{position:relative}
+.rt-code input{font-size:var(--fs-lg);font-weight:600;letter-spacing:.03em}
+.rt-sug{position:absolute;top:100%;left:0;right:0;z-index:5;margin-top:4px;max-height:280px;overflow:auto;background:#0c2147;border:1px solid var(--glass-border);border-radius:10px;box-shadow:0 16px 34px rgba(0,0,0,.6)}
+.rt-sug button{display:flex;gap:10px;width:100%;padding:8px 12px;border:0;background:transparent;color:var(--text-2);text-align:left;font-size:var(--fs-sm);border-bottom:1px solid var(--line-soft)}
+.rt-sug button:hover{background:rgba(79,155,255,.15);color:#fff}
+.rt-sug b{font-family:var(--font-mono);color:#a9d1ff;min-width:64px}
+.rt-sug span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rt-found{display:flex;gap:9px;align-items:flex-start;padding:10px 12px;border-radius:9px;font-size:var(--fs-base);line-height:1.4;background:rgba(255,255,255,.04);border:1px solid var(--line-soft);color:var(--text-3)}
+.rt-found .ico-svg{flex-shrink:0;margin-top:1px}
+.rt-found.ok{background:var(--green-light);border-color:rgba(63,207,106,.4);color:#b5f3c8;font-weight:600}
+.rt-found.no{background:var(--yellow-light);border-color:rgba(255,190,60,.4);color:#ffe0a3}
+.rt-preview-l{font-size:var(--fs-xs);font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+.rt-preview-box{overflow:hidden;border-radius:4px;box-shadow:0 0 0 1px rgba(255,255,255,.15),0 14px 30px rgba(0,0,0,.6)}
+
+/* La hoja: blanco y negro como el formato de Excel */
+.rotulo-sheet{box-sizing:border-box;padding:7mm;background:#fff;color:#111;font-family:Calibri,"Segoe UI",Arial,sans-serif;font-weight:700;overflow:hidden}
+.rt-grid{display:grid;grid-template-columns:27% 1fr;grid-template-rows:1fr 2.5fr 1fr 1fr;width:100%;height:100%;border:.8mm solid #111}
+.rt-grid > div{border:.5mm solid #111;min-width:0;min-height:0;padding:1.5mm 3mm;display:flex}
+.rt-desc{grid-column:1 / -1}
+.rt-fit{flex:1;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden;min-width:0}
+.rt-lbl .rt-fit{justify-content:flex-start;text-align:left}
+.rt-fit span{display:inline-block;max-width:100%;line-height:1.05;letter-spacing:-.01em}
+.rotulo-print{position:fixed;left:-30000px;top:0;pointer-events:none}
+
 /* ====== 8. RESPONSIVE E IMPRESIÓN ====== */
 @media(min-width:1251px){
   .exec-kpi-grid.k8{grid-template-columns:repeat(4,minmax(0,1fr))}
@@ -684,4 +715,16 @@ table.bitacora tr.pc td.lo{background:rgba(255,92,92,.22);color:#ffaaaa}
   .view-head h1,.card-h h3,.panel-h h3,.exec-kpi .val,.top-item .name,.top-item .pct,.dona-wrap .center .big,.health-card .val,.report b,.rv-label{color:#1e293b!important;text-shadow:none}
   .card,.exec-kpi,.exec-panel,.exec-summary,.health-card{backdrop-filter:none;break-inside:avoid}
   .card::before,.exec-kpi::before,.exec-panel::before,.exec-summary::before,.health-card::before{display:none}
+}
+/* Impresión de rótulo: solo la hoja, sin la app, en página horizontal sin márgenes */
+@media print{
+  body:not(.print-rotulo) .rotulo-print{display:none!important}
+  body.print-rotulo .shell,body.print-rotulo .toast{display:none!important}
+  body.print-rotulo{background:#fff!important}
+  body.print-rotulo .rotulo-print{position:static;left:auto}
+  .rotulo-print .rotulo-sheet{page:rotulo;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+@media(max-width:1000px){
+  .rt-body{grid-template-columns:1fr}
+  .rt-preview{display:none}
 }

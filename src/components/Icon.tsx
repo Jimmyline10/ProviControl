@@ -55,6 +55,9 @@ const P: Record<string, string> = {
   logIn: 'M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3',
   filter: 'M22 3H2l8 9.46V19l4 2v-8.54L22 3z',
   x: 'M18 6L6 18M6 6l12 12',
+  tag: 'M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82zM7 7h.01',
+  edit: 'M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z',
+  plus: 'M12 5v14M5 12h14',
 }
 
 export function Icon({ name, size = 18, className }: { name: keyof typeof P | string; size?: number; className?: string }) {

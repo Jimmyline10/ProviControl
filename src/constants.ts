@@ -19,6 +19,7 @@ export const VIEWS: [string, string, string, string][] = [
   ['resumen', 'Panel ejecutivo', 'dashboard', 'Operación'],
   ['agenda', 'Agenda', 'calendar', 'Operación'],
   ['bitacora', 'Bitácora', 'clipboard', 'Operación'],
+  ['rotulos', 'Rótulos', 'tag', 'Operación'],
   ['proveedores', 'Proveedores', 'truck', 'Gestión'],
   ['analisis', 'Análisis', 'chart', 'Gestión'],
   ['historial', 'Historial', 'archive', 'Gestión'],
