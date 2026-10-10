@@ -6,6 +6,8 @@ interface Auth {
   session: Session | null
   loading: boolean
   recovering: boolean
+  /** Rol invitado: solo ve, sin editar ni exportar. Se asigna en Supabase (app_metadata.role = 'invitado'). */
+  readOnly: boolean
   signIn: (email: string, password: string, remember: boolean) => Promise<string | null>
   sendReset: (email: string) => Promise<string | null>
   updatePassword: (password: string) => Promise<string | null>
@@ -52,5 +54,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
   const signOut = async () => { await supabase.auth.signOut() }
 
-  return <Ctx.Provider value={{ session, loading, recovering, signIn, sendReset, updatePassword, signOut }}>{children}</Ctx.Provider>
+  const readOnly = session?.user.app_metadata?.role === 'invitado'
+
+  return <Ctx.Provider value={{ session, loading, recovering, readOnly, signIn, sendReset, updatePassword, signOut }}>{children}</Ctx.Provider>
 }

@@ -728,3 +728,7 @@ table.bitacora tr.pc td.lo{background:rgba(255,92,92,.22);color:#ffaaaa}
   .rt-body{grid-template-columns:1fr}
   .rt-preview{display:none}
 }
+
+/* Rol invitado: no puede imprimir ni guardar como PDF desde el navegador */
+@media print{.shell.readonly{display:none!important}}
+.slot:disabled{cursor:default;pointer-events:none}

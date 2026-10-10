@@ -36,7 +36,7 @@ export default function App() {
   const [view, setView] = useState(fromHash)
   const [menuOpen, setMenuOpen] = useState(false)
   const { week, setWeek, status } = useApp()
-  const { session, signOut } = useAuth()
+  const { session, signOut, readOnly } = useAuth()
   useEffect(() => {
     const f = () => { setView(fromHash()); setMenuOpen(false) }
     window.addEventListener('hashchange', f); return () => window.removeEventListener('hashchange', f)
@@ -48,7 +48,7 @@ export default function App() {
   const isThisWeek = week === mondayOf(todayISO())
 
   return (
-    <div className={'shell' + (menuOpen ? ' menu-open' : '')}>
+    <div className={'shell' + (menuOpen ? ' menu-open' : '') + (readOnly ? ' readonly' : '')}>
       <aside className="sidebar">
         <div className="sb-brand">
           <LogoCube />
@@ -66,7 +66,7 @@ export default function App() {
         <div className="sb-tagline"><Icon name="truck" size={26} />Juntos por una cadena de suministro más eficiente</div>
         <div className="sb-user">
           <div className="sb-avatar">{email.slice(0, 1).toUpperCase() || 'U'}</div>
-          <div className="sb-user-info"><div className="sb-user-name" title={email}>{email || 'Usuario'}</div><div className="sb-user-role">Sesión activa</div></div>
+          <div className="sb-user-info"><div className="sb-user-name" title={email}>{email || 'Usuario'}</div><div className="sb-user-role">{readOnly ? 'Invitado · solo lectura' : 'Sesión activa'}</div></div>
           <button className="sb-logout" onClick={signOut} title="Cerrar sesión" aria-label="Cerrar sesión"><Icon name="logout" size={16} /></button>
         </div>
       </aside>
@@ -87,8 +87,8 @@ export default function App() {
               <button onClick={() => setWeek(addDays(week, 7))} aria-label="Semana siguiente"><Icon name="right" size={16} /></button>
             </div>
             <button className="btn ghost sm" disabled={isThisWeek} onClick={() => setWeek(mondayOf(todayISO()))}>Hoy</button>
-            <div className={'savechip' + (status.error ? ' bad' : '')} title={status.error || 'Los cambios se guardan en Supabase'}>
-              <Icon name={status.error ? 'alert' : ls ? 'check' : 'cloud'} size={14} />{saveLabel}
+            <div className={'savechip' + (status.error ? ' bad' : '')} title={readOnly ? 'Modo invitado: solo puede ver' : status.error || 'Los cambios se guardan en Supabase'}>
+              <Icon name={readOnly ? 'lock' : status.error ? 'alert' : ls ? 'check' : 'cloud'} size={14} />{readOnly ? 'Solo lectura' : saveLabel}
             </div>
           </div>
         </header>

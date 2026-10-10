@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { DAYS_FULL, DAYS_SHORT, ST } from '../../constants'
 import { useApp } from '../../context/AppContext'
+import { useAuth } from '../../context/AuthContext'
 import { useUI } from '../../context/UIContext'
 import { applyArrival, markAbsent, resetAppt } from '../../logic/appointments'
 import { inWeekF } from '../../logic/indicators'
@@ -33,6 +34,7 @@ export function ArrivalDialog({ a }: { a: Appointment }) {
 
 export function ApptActions({ a }: { a: Appointment }) {
   const { saveAppointment, removeAppointment } = useApp()
+  const { readOnly } = useAuth()
   const { toast, closeDialog, openDialog, confirm } = useUI()
   const acts: [string, string, () => void][] = [
     ['Registrar llegada…', 'primary', () => openDialog({ kind: 'arrival', id: a.id })],
@@ -44,15 +46,16 @@ export function ApptActions({ a }: { a: Appointment }) {
   return (
     <Modal onClose={closeDialog} title={a.provider} sub={<>{fmtShort(a.date)} · {hh(a.hour)} · Espacio {a.slot} · <b>{ST[a.status]}</b>
       {a.arrival ? ' · llegó ' + a.arrival : ''}{a.status === 'late' ? ` (+${a.delay} min)` : ''}</>}>
-      <div className="action-list">
+      {readOnly ? <p className="note"><span className="readonly-tag">Solo lectura</span>Modo invitado: no puede modificar este registro.</p> : <div className="action-list">
         {acts.map(([l, c, fn]) => <button key={l} type="button" className={'btn ' + c} onClick={() => { closeDialog(); fn() }}>{l}</button>)}
-      </div>
+      </div>}
     </Modal>
   )
 }
 
 export function WalkActions({ w }: { w: Walkin }) {
   const { removeWalkin } = useApp()
+  const { readOnly } = useAuth()
   const { closeDialog, openDialog, confirm } = useUI()
   const acts: [string, () => void][] = [
     ['✎ Editar registro', () => openDialog({ kind: 'walk-form', id: w.id })],
@@ -60,9 +63,9 @@ export function WalkActions({ w }: { w: Walkin }) {
   ]
   return (
     <Modal onClose={closeDialog} title={w.provider} sub={`Sin cita · ${fmtShort(w.date)} · ${w.arrival || ''}`}>
-      <div className="action-list">
+      {readOnly ? <p className="note"><span className="readonly-tag">Solo lectura</span>Modo invitado: no puede modificar este registro.</p> : <div className="action-list">
         {acts.map(([l, fn]) => <button key={l} type="button" className="btn light" onClick={() => { closeDialog(); fn() }}>{l}</button>)}
-      </div>
+      </div>}
     </Modal>
   )
 }

@@ -5,6 +5,7 @@ import type { AppData, Appointment, Config, Walkin } from '../types'
 import { EMPTY_HIST, HistFilters } from '../logic/history'
 import type { Scope } from '../logic/indicators'
 import { mondayOf, todayISO } from '../utils/date'
+import { useAuth } from './AuthContext'
 import { useUI } from './UIContext'
 
 export interface SaveStatus { saving: boolean; error: string; lastSaved: Date | null }
@@ -27,6 +28,7 @@ const upsert = <T extends { id: string }>(list: T[], item: T) =>
 
 export function AppProvider({ children }: { children: ReactNode }) {
   const { toast } = useUI()
+  const { readOnly } = useAuth()
   const [data, setData] = useState<AppData>({ appointments: [], walkins: [] })
   const [cfg, setCfg] = useState<Config>(DEF_CFG)
   const [week, setWeek] = useState(mondayOf(todayISO()))
@@ -42,6 +44,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   /** Guarda en Supabase; si falla avisa y vuelve a leer la BD para no mostrar datos falsos. */
   const run = async (op: () => Promise<void>) => {
+    if (readOnly) { toast('Modo invitado: solo lectura.'); reload(); return }
     setStatus(s => ({ ...s, saving: true }))
     try { await op(); setStatus({ saving: false, error: '', lastSaved: new Date() }) }
     catch (e: any) { setStatus(s => ({ ...s, saving: false, error: e.message })); toast('No se pudo guardar: ' + e.message); reload() }

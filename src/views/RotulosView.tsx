@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Icon } from '../components/Icon'
 import { Modal } from '../components/Modal'
 import { Paper, PAPER, printRotulo, RotuloData, RotuloPrintPortal, RotuloSheet } from '../components/Rotulo'
+import { useAuth } from '../context/AuthContext'
 import { useUI } from '../context/UIContext'
 import { notifyExport } from '../services/exportExcel'
 import {
@@ -124,6 +125,7 @@ function ProductForm({ p, list, onSave, onClose }: { p?: Product; list: Product[
 /* ---------- Vista ---------- */
 export function RotulosView() {
   const { toast, confirm } = useUI()
+  const { readOnly } = useAuth()
   const [list, setList] = useState<Product[]>([])
   const [store, setStore] = useState<ProductStore>('cloud')
   const [loading, setLoading] = useState(true)
@@ -163,6 +165,7 @@ export function RotulosView() {
   const pages = Math.max(1, Math.ceil(shown.length / PER_PAGE))
   useEffect(() => { setPage(1) }, [q, brand, sort])
   const rows = shown.slice((page - 1) * PER_PAGE, page * PER_PAGE)
+  const cols = readOnly ? 3 : 4
 
   const onImport = async (f?: File) => {
     if (!f) return
@@ -186,14 +189,14 @@ export function RotulosView() {
     <>
       <div className="view-head"><span className="vh-ico"><Icon name="tag" size={24} /></span>
         <div><h1>Rótulos</h1><p>Base de productos e impresión de rótulos de recepción a hoja completa.</p></div>
-        <div className="view-actions no-print">
+        {!readOnly && <div className="view-actions no-print">
           <button className="btn primary" onClick={() => setRotulo({})} disabled={loading}><Icon name="printer" size={15} />Crear rótulo</button>
-        </div>
+        </div>}
       </div>
 
-      {store === 'local' && !loading && (
+      {store === 'local' && !loading && !readOnly && (
         <div className="banner warn"><span><b>Los productos se están guardando solo en este navegador.</b> Para tenerlos en todos los equipos, ejecute el archivo <code>supabase/productos.sql</code> en Supabase (SQL Editor) y recargue la página.</span></div>)}
-      {pending > 0 && store === 'cloud' && (
+      {pending > 0 && store === 'cloud' && !readOnly && (
         <div className="banner"><span>Hay <b>{pending}</b> productos guardados en este navegador de antes. ¿Subirlos a Supabase?</span>
           <button className="btn navy sm" onClick={() => run(pushLocalToCloud, 'Productos subidos a Supabase.')}>Subir a Supabase</button></div>)}
       {error && <div className="banner warn"><span><b>No se pudo leer la base de productos:</b> {error}</span><button className="btn ghost sm" onClick={reload}>Reintentar</button></div>}
@@ -218,28 +221,29 @@ export function RotulosView() {
 
       <div className="card">
         <div className="card-h"><h3><Icon name="database" size={16} />Base de productos</h3>
-          <div className="view-actions">
+          {!readOnly && <div className="view-actions">
             <input ref={file} type="file" accept=".xlsx,.xls,.csv" hidden onChange={e => onImport(e.target.files?.[0])} />
             <button className="btn green sm" onClick={() => file.current?.click()}><Icon name="upload" size={14} />Importar Excel</button>
             <button className="btn ghost sm" disabled={!list.length} onClick={() => notifyExport(exportProducts(shown), toast)}><Icon name="download" size={14} />Exportar Excel</button>
             <button className="btn ghost sm" onClick={() => setEdit({})}><Icon name="plus" size={14} />Agregar</button>
             <button className="btn danger-ghost sm" disabled={!list.length} onClick={onClear}><Icon name="trash" size={14} />Vaciar base</button>
-          </div></div>
+          </div>}</div>
         <div className="tblwrap"><table className="t">
-          <thead><tr><th style={{ width: 130 }}>N° / Estilo</th><th>Descripción</th><th style={{ width: 140 }}>Marca</th><th className="c" style={{ width: 200 }}>Acciones</th></tr></thead>
+          <thead><tr><th style={{ width: 130 }}>N° / Estilo</th><th>Descripción</th><th style={{ width: 140 }}>Marca</th>{!readOnly && <th className="c" style={{ width: 200 }}>Acciones</th>}</tr></thead>
           <tbody>
-            {loading ? <tr><td colSpan={4} className="empty">Cargando base de productos…</td></tr>
+            {loading ? <tr><td colSpan={cols} className="empty">Cargando base de productos…</td></tr>
               : rows.length ? rows.map(p => (
                 <tr key={p.code}>
                   <td><b className="mono">{p.code}</b></td><td className="prov">{p.description}</td>
                   <td><span className="pill b">{brandOf(p)}</span></td>
-                  <td className="c"><div className="row-actions">
+                  {!readOnly && <td className="c"><div className="row-actions">
                     <button className="btn primary sm" onClick={() => setRotulo({ pre: p.code })}><Icon name="printer" size={13} />Rótulo</button>
                     <button className="btn ghost sm" title="Editar" aria-label="Editar" onClick={() => setEdit({ p })}><Icon name="edit" size={13} /></button>
                     <button className="btn danger-ghost sm" title="Eliminar" aria-label="Eliminar" onClick={() => onDelete(p)}><Icon name="trash" size={13} /></button>
-                  </div></td>
+                  </div></td>}
                 </tr>))
-              : <tr><td colSpan={4} className="empty">{list.length ? 'Ningún producto coincide con la búsqueda.'
+              : <tr><td colSpan={cols} className="empty">{list.length ? 'Ningún producto coincide con la búsqueda.'
+                : readOnly ? 'La base de productos está vacía.'
                 : <>La base está vacía. <br /><button className="btn green" onClick={() => file.current?.click()}><Icon name="upload" size={15} />Importar Excel de productos</button></>}</td></tr>}
           </tbody>
         </table></div>

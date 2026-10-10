@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { DAYS, DAYS_FULL, HOURS, ST } from '../constants'
 import { useApp } from '../context/AppContext'
+import { useAuth } from '../context/AuthContext'
 import { useUI } from '../context/UIContext'
 import { apps, capacityDay, inWeekF } from '../logic/indicators'
 import { exportAgenda, notifyExport } from '../services/exportExcel'
@@ -21,6 +22,7 @@ const ESTADOS: Status[] = ['pending', 'ontime', 'late', 'absent']
 export function AgendaView() {
   const { data, cfg, week, setWeek, clearRange } = useApp()
   const { openDialog, confirm, toast } = useUI()
+  const { readOnly } = useAuth()
   const [fProv, setFProv] = useState('')
   const [fEst, setFEst] = useState<'' | Status>('')
   const [fTurno, setFTurno] = useState('all')
@@ -61,7 +63,7 @@ export function AgendaView() {
           <div className="ag-title">
             <span className="ag-title-ico"><Icon name="calendar" size={22} /></span>
             <div><h1>Agenda semanal de recepción</h1>
-              <p>Clic en un espacio libre para programar · clic en una cita para registrar su llegada</p></div>
+              <p>{readOnly ? 'Modo invitado · solo lectura. Clic en una cita para ver su detalle' : 'Clic en un espacio libre para programar · clic en una cita para registrar su llegada'}</p></div>
           </div>
           <div className="ag-nav">
             <button onClick={() => setWeek(addDays(week, -7))} aria-label="Semana anterior"><Icon name="left" size={16} /></button>
@@ -71,13 +73,13 @@ export function AgendaView() {
           <button className="ag-btn" onClick={() => setWeek(mondayOf(today))}>Hoy</button>
         </div>
         <div className="ag-actions">
-          <button className="btn primary sm" onClick={() => openDialog({ kind: 'appt-form' })}><Icon name="calendar" size={14} />Nueva cita</button>
+          {!readOnly && <><button className="btn primary sm" onClick={() => openDialog({ kind: 'appt-form' })}><Icon name="calendar" size={14} />Nueva cita</button>
           <button className="btn green sm" onClick={() => openDialog({ kind: 'pick' })}><Icon name="checkCircle" size={14} />Registrar llegada</button>
-          <button className="btn ghost sm" onClick={() => openDialog({ kind: 'walk-form' })}><Icon name="truck" size={14} />Sin cita</button>
+          <button className="btn ghost sm" onClick={() => openDialog({ kind: 'walk-form' })}><Icon name="truck" size={14} />Sin cita</button></>}
           <span className="ag-occ">{cfg.slots} espacios por hora · Ocupación semanal <b>{fmtP(pct(apps(data, inW).length, cap * 6))}</b></span>
-          <button className="btn ghost sm" onClick={onExport}><Icon name="download" size={14} />Exportar Excel</button>
+          {!readOnly && <><button className="btn ghost sm" onClick={onExport}><Icon name="download" size={14} />Exportar Excel</button>
           <button className="btn ghost sm" onClick={onPdf}><Icon name="fileText" size={14} />Exportar PDF</button>
-          <button className="btn danger-ghost sm" onClick={onClear}><Icon name="trash" size={14} />Limpiar semana</button>
+          <button className="btn danger-ghost sm" onClick={onClear}><Icon name="trash" size={14} />Limpiar semana</button></>}
         </div>
 
         <div className="ag-filters">
@@ -136,7 +138,7 @@ export function AgendaView() {
                                     {a.arrival && a.status !== 'absent' ? ' · ' + a.arrival : ''}</span></span>
                               </button>
                             ) : (
-                              <button key={s} type="button" className="slot" title={`Programar ${DAYS_FULL[di]} ${hh(hr)} · Espacio ${s}`}
+                              <button key={s} type="button" className="slot" disabled={readOnly} title={`Programar ${DAYS_FULL[di]} ${hh(hr)} · Espacio ${s}`}
                                 onClick={() => openDialog({ kind: 'appt-form', pre: { date, hour: hr, slot: s } })}>
                                 <span className="num">#{s}</span><span className="plus">+</span>
                               </button>

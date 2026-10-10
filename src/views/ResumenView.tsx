@@ -1,4 +1,5 @@
 import { useApp } from '../context/AppContext'
+import { useAuth } from '../context/AuthContext'
 import { useUI } from '../context/UIContext'
 import { Dona } from '../components/Dona'
 import { Icon } from '../components/Icon'
@@ -16,6 +17,7 @@ import { Interpretation } from './resumen/Interpretation'
 export function ResumenView() {
   const { data, cfg, week, addData } = useApp()
   const { confirm, toast } = useUI()
+  const { readOnly } = useAuth()
   const r = calc(data, inWeekF(week)), p = calc(data, inWeekF(addDays(week, -7))), ser = weeksSeries(data, week, 8)
   const empty = !data.appointments.length && !data.walkins.length
   const cap = capacityDay(cfg) * 6
@@ -41,12 +43,13 @@ export function ResumenView() {
     <>
       <div className="view-head"><span className="vh-ico"><Icon name="dashboard" size={24} /></span><div><h1>Panel ejecutivo</h1>
         <p>Semana del {fmtLong(week)} al {fmtLong(weekEnd(week))}. Los porcentajes comparan contra la semana anterior.</p></div>
-        <div className="view-actions no-print">
+        {!readOnly && <div className="view-actions no-print">
           <button className="btn ghost" onClick={() => window.print()}><Icon name="printer" size={15} />Imprimir</button>
           <button className="btn primary" onClick={() => notifyExport(exportExec(data, cfg, week), toast)}><Icon name="download" size={15} />Exportar a Excel</button>
-        </div></div>
-      {empty && <div className="banner"><span><b>Aún no hay datos.</b> Programe su primera cita en <a href="#agenda">Agenda</a>, o cargue datos de ejemplo para explorar todas las ventanas.</span>
-        <button className="btn navy sm" onClick={loadDemo}>Cargar datos de ejemplo</button></div>}
+        </div>}</div>
+      {empty && (readOnly ? <div className="banner"><span><b>Aún no hay datos registrados.</b></span></div>
+        : <div className="banner"><span><b>Aún no hay datos.</b> Programe su primera cita en <a href="#agenda">Agenda</a>, o cargue datos de ejemplo para explorar todas las ventanas.</span>
+        <button className="btn navy sm" onClick={loadDemo}>Cargar datos de ejemplo</button></div>)}
       <section className="exec-section" style={{ marginTop: 0 }}>
         <h2 className="section-title">Indicadores clave</h2>
         <div className="exec-kpi-grid k8">

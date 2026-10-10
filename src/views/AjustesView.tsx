@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react'
 import { DEF_CFG } from '../constants'
 import { useApp } from '../context/AppContext'
+import { useAuth } from '../context/AuthContext'
 import { useUI } from '../context/UIContext'
 import { makeDemo } from '../logic/demo'
 import { downloadBackup, parseBackup } from '../services/backup'
@@ -11,6 +12,7 @@ import { Icon } from '../components/Icon'
 function CfgForm() {
   const { cfg, data, saveConfig } = useApp()
   const { toast } = useUI()
+  const { readOnly } = useAuth()
   const maxSlot = Math.max(1, ...data.appointments.map(a => a.slot))
   const [v, setV] = useState({ metaCump: cfg.metaCump, maxImpr: cfg.maxImpr, maxAbs: cfg.maxAbs, maxDelay: cfg.maxDelay, slots: cfg.slots })
   const set = (k: keyof typeof v) => (e: React.ChangeEvent<HTMLInputElement>) => setV({ ...v, [k]: +e.target.value })
@@ -20,7 +22,7 @@ function CfgForm() {
     saveConfig({ ...cfg, ...v, metaPunt: v.metaCump }); toast('Metas guardadas.')
   }
   const field = (id: string, label: string, k: keyof typeof v, min: number, max: number) =>
-    <div className="field"><label htmlFor={id}>{label}</label><input id={id} type="number" min={min} max={max} value={v[k]} onChange={set(k)} /></div>
+    <div className="field"><label htmlFor={id}>{label}</label><input id={id} type="number" min={min} max={max} value={v[k]} onChange={set(k)} disabled={readOnly} /></div>
   return (
     <>
       <div className="formgrid">
@@ -30,10 +32,10 @@ function CfgForm() {
         {field('cDel', 'Retraso aceptable (≤ min)', 'maxDelay', 1, 240)}
         {field('cSlots', `Espacios por hora (mín. ${maxSlot})`, 'slots', maxSlot, 8)}
       </div>
-      <div className="toolbar" style={{ margin: '14px 0 0' }}>
+      {!readOnly && <div className="toolbar" style={{ margin: '14px 0 0' }}>
         <button className="btn navy" onClick={save}>Guardar metas</button>
         <button className="btn ghost" onClick={() => { saveConfig({ ...DEF_CFG }); toast('Valores restablecidos.') }}>Restablecer valores</button>
-      </div>
+      </div>}
     </>
   )
 }
@@ -41,6 +43,7 @@ function CfgForm() {
 export function AjustesView() {
   const { data, cfg, status, addData, saveConfig, removeDemo, wipeAll, restore } = useApp()
   const { confirm, toast } = useUI()
+  const { readOnly } = useAuth()
   const file = useRef<HTMLInputElement>(null)
   const n = data.appointments.length + data.walkins.length
   const demo = data.appointments.filter(a => a.demo).length + data.walkins.filter(w => w.demo).length
@@ -75,12 +78,12 @@ export function AjustesView() {
           </div>
           {status.error && <div className="banner warn">{status.error}</div>}
           <p className="note">Cada cambio se guarda en la <b>base de datos (Supabase)</b>, por lo que ya no depende de este navegador ni de este equipo. Aun así puede descargar un <b>respaldo</b> .json y restaurarlo cuando quiera.</p>
-          <div className="toolbar" style={{ margin: '12px 0 0' }}>
+          {!readOnly && <div className="toolbar" style={{ margin: '12px 0 0' }}>
             <button className="btn navy" onClick={() => { downloadBackup(data, cfg); toast('Respaldo descargado. Guárdelo en un lugar seguro.') }}><Icon name="download" size={15} />Descargar respaldo (.json)</button>
             <button className="btn ghost" onClick={() => file.current?.click()}><Icon name="upload" size={15} />Restaurar respaldo…</button>
             <input ref={file} type="file" accept=".json,application/json" style={{ display: 'none' }} onChange={onFile} />
             <button className="btn green" onClick={() => notifyExport(exportAll(data), toast)}><Icon name="download" size={15} />Exportar todo a Excel</button>
-          </div></div></div>
+          </div>}</div></div>
 
         <div className="card"><div className="card-h"><h3><Icon name="target" size={16} />Metas e indicadores</h3><span className="hint">Definen los colores y semáforos de toda la aplicación</span></div>
           <div className="card-b"><CfgForm key={JSON.stringify(cfg)} /></div></div>
@@ -92,13 +95,13 @@ export function AjustesView() {
           <b>Improvisación</b> = <code>sin cita ÷ (programadas + sin cita)</code>. <b>Inasistencia</b> = <code>no llegaron ÷ programadas</code>.<br />
           <b>Retraso</b> = minutos desde el inicio de la hora agendada hasta la llegada real. <b>Ocupación</b> = <code>citas ÷ (espacios por hora × 7 horas × 6 días)</code>.</p></div></div>
 
-        <div className="card"><div className="card-h"><h3><Icon name="beaker" size={16} />Datos de prueba y limpieza</h3></div><div className="card-b">
+        {!readOnly && <div className="card"><div className="card-h"><h3><Icon name="beaker" size={16} />Datos de prueba y limpieza</h3></div><div className="card-b">
           <div className="toolbar" style={{ margin: 0 }}>
             <button className="btn ghost" onClick={loadDemo}>Cargar datos de ejemplo (6 semanas)</button>
             <button className="btn ghost" disabled={!demo} onClick={() => { removeDemo(); toast('Datos de ejemplo quitados.') }}>Quitar datos de ejemplo ({demo})</button>
             <button className="btn danger" onClick={wipe}><Icon name="trash" size={15} />Borrar todos los datos</button>
           </div>
-          <p className="note" style={{ marginTop: 10 }}>Los datos de ejemplo se marcan aparte: puede quitarlos sin perder sus registros reales.</p></div></div>
+          <p className="note" style={{ marginTop: 10 }}>Los datos de ejemplo se marcan aparte: puede quitarlos sin perder sus registros reales.</p></div></div>}
       </div>
     </>
   )
