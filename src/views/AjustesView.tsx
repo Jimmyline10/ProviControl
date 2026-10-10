@@ -41,7 +41,7 @@ function CfgForm() {
 }
 
 export function AjustesView() {
-  const { data, cfg, status, addData, saveConfig, removeDemo, wipeAll, restore } = useApp()
+  const { data, cfg, status, addData, removeDemo, restore } = useApp()
   const { confirm, toast } = useUI()
   const { readOnly } = useAuth()
   const file = useRef<HTMLInputElement>(null)
@@ -59,9 +59,6 @@ export function AjustesView() {
   const loadDemo = async () => {
     if (n && !(await confirm('Se agregarán datos de ejemplo junto a los registros actuales. Podrá quitarlos después sin perder los suyos.', 'Agregar ejemplo'))) return
     addData(makeDemo(cfg)); toast('Datos de ejemplo cargados.')
-  }
-  const wipe = async () => {
-    if (await confirm('Se borrarán TODAS las citas y registros. Descargue un respaldo antes si lo necesita.', 'Borrar todo')) { wipeAll(); toast('Datos borrados.') }
   }
   const stat = (l: string, v: React.ReactNode, style?: React.CSSProperties) =>
     <div className="s"><div className="l">{l}</div><div className="v" style={style}>{v}</div></div>
@@ -99,7 +96,6 @@ export function AjustesView() {
           <div className="toolbar" style={{ margin: 0 }}>
             <button className="btn ghost" onClick={loadDemo}>Cargar datos de ejemplo (6 semanas)</button>
             <button className="btn ghost" disabled={!demo} onClick={() => { removeDemo(); toast('Datos de ejemplo quitados.') }}>Quitar datos de ejemplo ({demo})</button>
-            <button className="btn danger" onClick={wipe}><Icon name="trash" size={15} />Borrar todos los datos</button>
           </div>
           <p className="note" style={{ marginTop: 10 }}>Los datos de ejemplo se marcan aparte: puede quitarlos sin perder sus registros reales.</p></div></div>}
       </div>
