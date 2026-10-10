@@ -20,8 +20,8 @@ const TURNOS: Record<string, [string, (h: number) => boolean]> = {
 const ESTADOS: Status[] = ['pending', 'ontime', 'late', 'absent']
 
 export function AgendaView() {
-  const { data, cfg, week, setWeek, clearRange } = useApp()
-  const { openDialog, confirm, toast } = useUI()
+  const { data, cfg, week, setWeek } = useApp()
+  const { openDialog, toast } = useUI()
   const { readOnly } = useAuth()
   const [fProv, setFProv] = useState('')
   const [fEst, setFEst] = useState<'' | Status>('')
@@ -43,11 +43,6 @@ export function AgendaView() {
   const weekTotal = perDay.reduce((n, d) => n + d.n, 0)
   const nMatch = filtering ? data.appointments.filter(a => inW(a.date) && matches(a.provider, a.status)).length : 0
 
-  const onClear = async () => {
-    if (await confirm(`¿Borrar TODOS los registros de la semana ${fmtShort(week)} al ${fmtShort(weekEnd(week))}?`, 'Borrar semana')) {
-      clearRange(week, weekEnd(week)); toast('Semana limpiada.')
-    }
-  }
   const onExport = () => notifyExport(exportAgenda(data, week), toast)
   const onPdf = () => {
     const label = [fProv && 'Proveedor: ' + fProv, fEst && 'Estado: ' + ST[fEst], fTurno !== 'all' && 'Turno: ' + TURNOS[fTurno][0]].filter(Boolean).join(' · ')
@@ -78,8 +73,7 @@ export function AgendaView() {
           <button className="btn ghost sm" onClick={() => openDialog({ kind: 'walk-form' })}><Icon name="truck" size={14} />Sin cita</button></>}
           <span className="ag-occ">{cfg.slots} espacios por hora · Ocupación semanal <b>{fmtP(pct(apps(data, inW).length, cap * 6))}</b></span>
           {!readOnly && <><button className="btn ghost sm" onClick={onExport}><Icon name="download" size={14} />Exportar Excel</button>
-          <button className="btn ghost sm" onClick={onPdf}><Icon name="fileText" size={14} />Exportar PDF</button>
-          <button className="btn danger-ghost sm" onClick={onClear}><Icon name="trash" size={14} />Limpiar semana</button></>}
+          <button className="btn ghost sm" onClick={onPdf}><Icon name="fileText" size={14} />Exportar PDF</button></>}
         </div>
 
         <div className="ag-filters">
